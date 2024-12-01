@@ -92,19 +92,21 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
                 # Click the search button
                 search_button.click()
+                st.write("Search button clicked successfully-1!")
             
             except ElementClickInterceptedException as e:
                 # Handle situations where an element is blocked by something else (like a popup or iframe)
-                print(f"Error: Element was not clickable due to overlay or iframe: {e}")
+                # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
                 # Optionally: try using JavaScript to click the element
                 driver.execute_script("arguments[0].click();", search_button)
+                st.write("Search button clicked successfully-2!")
             
             except TimeoutException as e:
                 # Handle timeout if element is not found within the wait time
                 print(f"Error: Timeout waiting for the search button: {e}")
-
+                st.write("Search button couldn't be clicked!")
             
-            st.write("Search button clicked successfully!")
+
         
             # Optional: Pause to observe the result
             time.sleep(2)
