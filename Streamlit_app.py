@@ -3,14 +3,21 @@ from langchain_groq import ChatGroq
 from io import BytesIO
 import PyPDF2
 import time
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.service import Service
+# from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.core.os_manager import ChromeType
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
 
 
 # Define Groq API key and model
@@ -46,11 +53,18 @@ def main():
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
 
+            options = Options()
+            options.add_argument("--disable-gpu")
+            options.add_argument("--headless")
+            
+            driver = get_driver()
+            driver.get("http://google.com")
+
             # Scrape jobs based on extracted skills and location
-            scrapeJobsData()
+            # scrapeJobsData()
 
             # Display the fetched job data
-            st.subheader("Job Recommendations:")
+            # st.subheader("Job Recommendations:")
             # for job in fetched_data:
             #     st.write(f"Job URL: {job['URL']}")
             #     st.write(f"Job Description: {job['data']}")
@@ -97,27 +111,15 @@ def extract_skills_and_location(applicant_info):
     except IndexError:
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
+@st.cache_resource
+def get_driver():
+    return webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        ),
+        options=options,
+    )
 
-def scrapeJobsData():
-    @st.cache_resource
-    def get_driver():
-        return webdriver.Chrome(
-            service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-            ),
-            options=options,
-        )
-
-    options = Options()
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
-    options.add_argument(f'user-agent={user_agent}')
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
-
-    driver = get_driver()
-    driver.get("https://www.linkedin.com/")
-
-    st.code(driver.page_source)
-
+st.code(driver.page_source)
 if __name__ == "__main__":
     main()
