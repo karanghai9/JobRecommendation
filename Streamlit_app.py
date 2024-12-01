@@ -24,18 +24,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 
-
-def delete_selenium_log():
-    if os.path.exists('selenium.log'):
-        os.remove('selenium.log')
-
-
-def show_selenium_log():
-    if os.path.exists('selenium.log'):
-        with open('selenium.log') as f:
-            content = f.read()
-            st.code(content)
-
 def scrape_permutations():
 
     options = Options()
@@ -47,7 +35,7 @@ def scrape_permutations():
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--disable-features=VizDisplayCompositor")
 
-    with webdriver.Chrome(options=options, service_log_path='selenium.log') as driver:
+    with webdriver.Chrome(options=options) as driver:
         try:
             requests = 0
             driver.implicitly_wait(10)
