@@ -114,7 +114,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
 
-            
+            st.code(driver.page_source)
             
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
