@@ -1,5 +1,4 @@
 Streamlit
 PyPDF2
 langchain_groq
-selenium
 playwright
