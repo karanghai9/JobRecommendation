@@ -70,7 +70,11 @@ def main():
             user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
             options.add_argument(f'user-agent={user_agent}')
             options.add_argument("--disable-gpu")
-            options.add_argument("--headless")
+            # options.add_argument("--headless")
+            options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36")
+            options.add_argument("--disable-extensions")  # Disable any extensions
+            options.add_argument("--disable-gpu")  # Disable GPU acceleration
+            options.add_argument("--no-sandbox")  # For certain systems like Linux
             
             driver = get_driver()
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
