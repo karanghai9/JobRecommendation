@@ -73,7 +73,7 @@ def main():
             options.add_argument("--headless")
             
             driver = get_driver()
-            driver.get("https://google.com")
+            driver.get("https://www.stepstone.de/work/?action=facet_selected")
             
             st.code(driver.page_source)
 
