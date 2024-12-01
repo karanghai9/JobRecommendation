@@ -56,7 +56,7 @@ def main():
             # Scrape jobs based on extracted skills and location
             msg = scrapeJobsData()
             st.success(msg)
-
+            
             @st.cache_resource
             def get_driver():
                 return webdriver.Chrome(
@@ -71,9 +71,7 @@ def main():
             options.add_argument("--headless")
             
             driver = get_driver()
-            driver.get("http://example.com")
-            
-            st.code(driver.page_source)
+            driver.get("https://www.stepstone.de/work/?action=facet_selected")
             
             st.code(driver.page_source)
 
