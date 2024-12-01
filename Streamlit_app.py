@@ -1,5 +1,6 @@
 import streamlit as st
 import PyPDF2
+from io import BytesIO
 
 def main():
     st.title("LLM Powered Job Recommendation System")
@@ -10,27 +11,23 @@ def main():
     if uploaded_file is not None:
         st.write(f"Uploaded File: {uploaded_file.name}")
 
-        # Read and display the uploaded file's content
-        file_bytes = uploaded_file.read()
-
         # Extract text from the uploaded PDF
-        resume_text = extract_text_from_pdf(file_bytes)
-        
-        if resume_text:
-            st.success("File uploaded and text extracted successfully!")
-            st.text_area("Extracted Text", resume_text, height=300)
+        text = extract_text_from_pdf(uploaded_file)
+
+        if text:
+            st.success("File uploaded and processed successfully!")
+            st.text_area("Extracted Text", text, height=300)
         else:
             st.error("No text found in the PDF.")
 
-def extract_text_from_pdf(file_bytes):
+def extract_text_from_pdf(uploaded_file):
     try:
-        # Use PyPDF2 to read from in-memory bytes
-        reader = PyPDF2.PdfReader(file_bytes)
+        # Use BytesIO to simulate file-like object
+        pdf_file = BytesIO(uploaded_file.read())
+        reader = PyPDF2.PdfReader(pdf_file)
         text = ""
         for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text
+            text += page.extract_text() or ""  # Handle potential None return
         return text.strip() if text else "No text found."
     except Exception as e:
         return f"Error extracting text: {str(e)}"
