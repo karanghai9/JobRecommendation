@@ -92,31 +92,33 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
                 # Click the search button
                 search_button.click()
-                st.write("Search button clicked successfully-11!")
+                st.write("Search button clicked successfully-1!")
             
             except ElementClickInterceptedException as e:
                 # Handle situations where an element is blocked by something else (like a popup or iframe)
                 # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
                 # Optionally: try using JavaScript to click the element
                 driver.execute_script("arguments[0].click();", search_button)
-                st.write(driver.current_url)
+                st.write("Search button clicked successfully-2!")
             
             except TimeoutException as e:
                 # Handle timeout if element is not found within the wait time
                 print(f"Error: Timeout waiting for the search button: {e}")
                 st.write("Search button COULDN'T be clicked!")
-            
-
         
-            # Optional: Pause to observe the result
             time.sleep(2)
 
+            # st.code(driver.current_url)
 
-
-
-            st.code(driver.current_url)
-            
-            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
+                )
+                divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            except TimeoutException:
+                st.write("Divs with class 'res-nehv70' did not load in time.")
+                
+            # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
             # Get the first div's HTML
             if divs:
