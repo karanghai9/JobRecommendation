@@ -42,7 +42,7 @@ def scrape_permutations():
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
             sleep(randint(8, 10))
             data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
-            return "hello"
+            return str(data)
         except IndexError:
             pass
 
