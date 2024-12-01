@@ -5,21 +5,57 @@ import PyPDF2
 import time
 import pandas as pd
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.os_manager import ChromeType
-
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 # from selenium.webdriver.chrome.service import Service
 # from webdriver_manager.chrome import ChromeDriverManager
 # from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
 
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeType
+from datetime import datetime
+from random import randint
+from time import sleep
+from stqdm import stqdm
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+
+
+def delete_selenium_log():
+    if os.path.exists('selenium.log'):
+        os.remove('selenium.log')
+
+
+def show_selenium_log():
+    if os.path.exists('selenium.log'):
+        with open('selenium.log') as f:
+            content = f.read()
+            st.code(content)
+
+def scrape_permutations():
+
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-features=NetworkService")
+    options.add_argument("--window-size=1920x1080")
+    options.add_argument("--disable-features=VizDisplayCompositor")
+
+    with webdriver.Chrome(options=options, service_log_path='selenium.log') as driver:
+        try:
+            requests = 0
+            driver.implicitly_wait(10)
+            driver.get(https://www.stepstone.de/work/?action=facet_selected)
+            sleep(randint(8, 10))
+            data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
+            return "hello"
 
 # Define Groq API key and model
 GROQ_API_KEY = "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"  # Replace with your actual Groq API key
@@ -55,37 +91,29 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             # Scrape jobs based on extracted skills and location
-            msg = scrapeJobsData()
-            st.success(msg)
+            # msg = scrapeJobsData()
+            # st.success(msg)
             
-            @st.cache_resource
-            def get_driver():
-                return webdriver.Chrome(
-                    service=Service(
-                        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-                    ),
-                    options=options,
-                )
+            # @st.cache_resource
+            # def get_driver():
+            #     return webdriver.Chrome(
+            #         service=Service(
+            #             ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            #         ),
+            #         options=options,
+            #     )
             
-            options = Options()
-            options.add_argument("--disable-gpu")
-            options.add_argument("--headless")
-            options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36")
-            options.add_argument("--disable-extensions")  # Disable any extensions
-            options.add_argument("--no-sandbox")  # For certain systems like Linux
+            # options = Options()
+            # options.add_argument("--disable-gpu")
+            # options.add_argument("--headless")
+            # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36")
+            # options.add_argument("--disable-extensions")  # Disable any extensions
+            # options.add_argument("--no-sandbox")  # For certain systems like Linux
             
-            driver = get_driver()
+            # driver = get_driver()
             # driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            url = 'https://quotes.toscrape.com/'
-            driver.get(url)
-            quotes = driver.find_elements('xpath', '//span[@class="text"]')
-            data = []
-            for q in quotes:
-                data.append(q.text)
-            driver.quit()
-            df = pd.DataFrame(data, columns=['Quotes'])
-            st.dataframe(df)
+            scrape_permutations()
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
