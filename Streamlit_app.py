@@ -84,6 +84,14 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
             
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+
+            # Get the first div's HTML
+            if divs:
+                div_html = divs[0].get_attribute("outerHTML")
+                st.write(div_html)
+            else:
+                st.write("No div found with class 'res-nehv70'")
+    
             divs = divs[:1]
             
             # Store the URLs to track if the page is already opened
