@@ -47,7 +47,7 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             # Scrape jobs based on extracted skills and location
-            fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
+            scrapeJobsData()
 
             # Display the fetched job data
             st.subheader("Job Recommendations:")
@@ -98,7 +98,7 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 
-def scrapeJobsData(applicantSkills, applicantLocation):
+def scrapeJobsData():
     @st.cache_resource
     def get_driver():
         return webdriver.Chrome(
@@ -115,72 +115,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
     driver = get_driver()
     driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-    # Accept cookies
-    try:
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))
-        ).click()
-        print("Clicked on Accept Cookies")
-    except Exception as e:
-        print(f"Could not click on 'Accept Cookies': {e}")
-
-    # Wait for the job title input field and location input field
-    try:
-        input_element = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]')
-            )
-        )
-        driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
-        input_element.send_keys(applicantSkills)
-
-        location_input = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]')
-            )
-        )
-        driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
-        location_input.send_keys(applicantLocation)
-
-        # Locate and click the search button
-        search_button = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-        )
-        search_button.click()
-        print("Search button clicked successfully!")
-
-    except Exception as e:
-        print(f"Error interacting with elements: {e}")
-        driver.quit()
-        return []
-
-    # Continue with scraping logic...
-    time.sleep(2)
-    # Ensure the job listings are loaded
-    WebDriverWait(driver, 20).until(
-        EC.presence_of_all_elements_located((By.CLASS_NAME, "res-nehv70"))
-    )
-    
-    # Fetch job listings
-    divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
-    divs = divs[:10]  # Limit to first 10 listings
-
-    fetched_data = []
-    for div in divs:
-        try:
-            WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div)).click()
-            time.sleep(2)  # Wait for the new page to load
-            
-            # Retrieve job details
-            job_requirements = driver.find_element(By.CLASS_NAME, "job-ad-display-147ed8i").text
-            fetched_data.append({"URL": driver.current_url, "data": job_requirements})
-            driver.back()  # Go back to the search results
-
-        except Exception as e:
-            print(f"Error occurred: {e}")
-
-    driver.quit()
-    return fetched_data
+    st.code(driver.page_source)
 
 if __name__ == "__main__":
     main()
