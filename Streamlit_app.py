@@ -56,6 +56,8 @@ def scrape_permutations():
             sleep(randint(8, 10))
             data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
             return "hello"
+        except IndexError:
+            pass
 
 # Define Groq API key and model
 GROQ_API_KEY = "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"  # Replace with your actual Groq API key
