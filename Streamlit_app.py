@@ -3,6 +3,7 @@ from langchain_groq import ChatGroq
 from io import BytesIO
 import PyPDF2
 import time
+import pandas as pd
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
