@@ -48,7 +48,7 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             # Scrape jobs based on extracted skills and location
-            scrapeJobsData()
+            fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
 
             # Display the fetched job data
             st.subheader("Job Recommendations:")
@@ -94,13 +94,12 @@ def extract_skills_and_location(applicant_info):
         # Split the applicant_info string based on the defined keywords and extract relevant data
         applicantSkills = applicant_info.split("Skills = ")[1].split("\n")[0].strip()
         applicantLocation = applicant_info.split("Location = ")[1].split("\n")[0].strip()
-        
         return applicantSkills, applicantLocation
     except IndexError:
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 
-def scrapeJobsData():
+def scrapeJobsData(applicantSkills, applicantLocation):
     @st.cache_resource
     def get_driver():
         return webdriver.Chrome(
@@ -117,7 +116,113 @@ def scrapeJobsData():
     driver = get_driver()
     driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-    st.code(driver.page_source)
+    # Click the 'Accept Cookies' only once
+    try:
+        WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))).click()
+        print("Clicked on Accept Cookies")
+    except Exception as e:
+        print("Could not click on 'Accept Cookies':", e)
+
+    # Wait for the input element to be present by its ID
+    input_element = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
+    )
+    driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
+    input_element.send_keys(applicantSkills)
+
+    # Locate the second input element (location input) using XPath by placeholder
+    location_input = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
+    )
+    driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
+    location_input.send_keys(applicantLocation)
+
+    # Locate the search button and click it
+    search_button = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+    )
+    search_button.click()
+    print("Search button clicked successfully!")
+
+    # Optional: Pause to observe the result
+    time.sleep(2)
+
+    WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "res-nehv70")))
+    # Find all divs with the desired class name
+    divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+    # Store the main window handle
+    main_window = driver.current_window_handle
+    print("works till here:", len(divs))
+
+    divs = divs[:10]
+
+    # Store the URLs to track if the page is already opened
+    opened_urls = []
+    fetched_data = []
+
+    # Loop through each div, click it and retrieve the new window URL
+    for div in divs:
+        try:
+            # Ensure the element is clickable before clicking
+            WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
+            div.click()
+            # Wait for the new window to load
+            time.sleep(2)
+            # Get the current URL (before switching to the new window)
+            current_url = driver.current_url
+            print("Current URL:", current_url)
+            # Switch to the new window
+            main_window = driver.current_window_handle  # Store main window handle
+            for handle in driver.window_handles:
+                if handle != main_window:
+                    driver.switch_to.window(handle)
+                    break
+            # Get the new window URL
+            new_url = driver.current_url
+            # Optional: You can extract more details from the new page if needed here
+
+            # Check if the new URL has been already processed
+            if new_url in opened_urls:
+                driver.close()
+                driver.switch_to.window(main_window)
+                continue
+            else:
+                opened_urls.append(new_url)
+                print("Opened new URL:", new_url)
+                try:
+                    # articles = driver.find_element(By.CLASS_NAME, "job-ad-display-147ed8i")
+                    articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
+
+                    # Ensure there are at least 3 articles
+                    if len(articles) >= 3:
+                        # Access the third article (index 2)
+                        article = articles[2]
+
+                        # Get the text content (visible text) of the third article
+                        job_requirements = article.text
+
+                        # Print the details of the third article
+                        print(f"Text Content:\n{job_requirements}")
+                    else:
+                        print("Less than 3 articles found.")
+
+                    # To get only the visible text, use:
+                    # article_content = article.text
+                except Exception as e:
+                    print("Error fetching article content: {e}")
+
+                fetched_data.append({"URL": new_url, "data": job_requirements})
+
+            # Close the new window and switch back to the main window
+            driver.close()
+            driver.switch_to.window(main_window)
+            print("BACK ON URL:", driver.current_url)
+
+        except Exception as e:
+            print(f"Error occurred: {e}")
+
+    driver.quit()
+    return fetched_data
 
 if __name__ == "__main__":
     main()
