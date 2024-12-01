@@ -75,7 +75,7 @@ def main():
             driver = get_driver()
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept")))
+            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept")))
             
             st.code(driver.page_source)
 
