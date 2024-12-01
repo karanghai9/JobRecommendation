@@ -9,7 +9,7 @@ def main():
     uploaded_file = st.file_uploader("Upload your resume", type="pdf")
 
     if uploaded_file is not None:
-        st.write(f"Uploaded File: {uploaded_file.name}")
+        # st.write(f"Uploaded File: {uploaded_file.name}")
 
         # Extract text from the uploaded PDF
         text = extract_text_from_pdf(uploaded_file)
