@@ -20,7 +20,6 @@ from webdriver_manager.chrome import ChromeType
 from datetime import datetime
 from random import randint
 from time import sleep
-from stqdm import stqdm
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
