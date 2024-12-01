@@ -86,10 +86,6 @@ def main():
             st.subheader("Extracted Information:")
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
-
-            # Scrape jobs based on extracted skills and location
-            # msg = scrapeJobsData()
-            # st.success(msg)
             
             # @st.cache_resource
             # def get_driver():
@@ -160,9 +156,6 @@ def extract_skills_and_location(applicant_info):
         return applicantSkills, applicantLocation
     except IndexError:
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
-
-def scrapeJobsData():
-    return "Hello KG"
 
 if __name__ == "__main__":
     main()
