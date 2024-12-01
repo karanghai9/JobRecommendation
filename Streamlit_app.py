@@ -16,7 +16,7 @@ def main():
 
         if resume:
             st.success("File uploaded and processed successfully!")
-            st.text_area("Extracted Text", text, height=300)
+            st.text_area("Extracted Text", resume, height=300)
         else:
             st.error("No text found in the PDF.")
 
