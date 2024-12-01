@@ -125,7 +125,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     print(f"Error occurred: {e}")
         
             driver.quit()
-            return opened_urls
+            return fetched_data
 
         except IndexError:
             pass
