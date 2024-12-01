@@ -4,6 +4,7 @@ from io import BytesIO
 import PyPDF2
 import time
 import pandas as pd
+import json
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -164,7 +165,9 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
-            st.success(str(fetched_data))
+            # Convert the list to a JSON string
+            data_str = json.dumps(fetched_data)
+            st.success(data_str)
             st.success("Done")
 
             # Display the fetched job data
