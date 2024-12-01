@@ -99,7 +99,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
                 # Optionally: try using JavaScript to click the element
                 driver.execute_script("arguments[0].click();", search_button)
-                st.write("Search button clicked successfully-12!")
+                st.write(driver.current_url)
             
             except TimeoutException as e:
                 # Handle timeout if element is not found within the wait time
@@ -114,7 +114,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
 
-            st.code(driver.page_source)
+            st.code(driver.current_url)
             
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
