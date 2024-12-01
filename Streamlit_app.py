@@ -12,7 +12,7 @@ def main():
         # st.write(f"Uploaded File: {uploaded_file.name}")
 
         # Extract text from the uploaded PDF
-        text = extract_text_from_pdf(uploaded_file)
+        resume = extract_text_from_pdf(uploaded_file)
 
         if text:
             st.success("File uploaded and processed successfully!")
