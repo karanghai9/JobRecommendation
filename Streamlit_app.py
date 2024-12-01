@@ -55,44 +55,44 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             
-            input_element = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
-            )
-            driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
-            input_element.send_keys(applicantSkills)
+            # input_element = WebDriverWait(driver, 5).until(
+            #     EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
+            # )
+            # driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
+            # input_element.send_keys(applicantSkills)
         
-            # Locate the second input element (location input) using XPath by placeholder
-            location_input = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
-            )
-            driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
-            location_input.send_keys(applicantLocation)
+            # # Locate the second input element (location input) using XPath by placeholder
+            # location_input = WebDriverWait(driver, 5).until(
+            #     EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
+            # )
+            # driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
+            # location_input.send_keys(applicantLocation)
         
-            # Locate the search button and click it
-            search_button = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            )
-            search_button.click()
-            print("Search button clicked successfully!")
+            # # Locate the search button and click it
+            # search_button = WebDriverWait(driver, 5).until(
+            #     EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            # )
+            # search_button.click()
+            # print("Search button clicked successfully!")
         
-            # Optional: Pause to observe the result
-            time.sleep(2)
+            # # Optional: Pause to observe the result
+            # time.sleep(2)
 
 
 
 
             
             
-            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
-            # Get the first div's HTML
-            if divs:
-                div_html = divs[0].get_attribute("outerHTML")
-                st.write(div_html)
-            else:
-                st.write("No div found with class 'res-nehv70'")
+            # # Get the first div's HTML
+            # if divs:
+            #     div_html = divs[0].get_attribute("outerHTML")
+            #     st.write(div_html)
+            # else:
+            #     st.write("No div found with class 'res-nehv70'")
     
-            divs = divs[:1]
+            # divs = divs[:1]
             
             # Store the URLs to track if the page is already opened
             opened_urls = []
