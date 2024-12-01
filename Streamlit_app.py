@@ -8,6 +8,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Define Groq API key and model
 GROQ_API_KEY = "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"  # Replace with your actual Groq API key
@@ -100,11 +103,22 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 def scrapeJobsData(applicantSkills, applicantLocation):
-    options = webdriver.ChromeOptions()
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('--headless')
+    # user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
+    # options.add_argument(f'user-agent={user_agent}')
+    # driver = webdriver.Chrome(options=options)
+
+
+
+    options = Options()
     options.add_argument('--headless')
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
-    options.add_argument(f'user-agent={user_agent}')
-    driver = webdriver.Chrome(options=options)
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    
+    # Automatically manage the chromedriver using webdriver-manager
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     # Open the target URL
     driver.get("https://www.stepstone.de/work/?action=facet_selected")
