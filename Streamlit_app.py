@@ -113,7 +113,7 @@ def scrapeJobsData():
     options.add_argument("--headless")
 
     driver = get_driver()
-    driver.get("https://www.stepstone.de/work/?action=facet_selected")
+    driver.get("https://www.linkedin.com/")
 
     st.code(driver.page_source)
 
