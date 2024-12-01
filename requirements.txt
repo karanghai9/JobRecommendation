@@ -1,6 +1,6 @@
 Streamlit
 PyPDF2
 langchain_groq
-seleniumbase
+selenium
 webdriver-manager
 pandas
