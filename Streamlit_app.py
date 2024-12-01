@@ -67,13 +67,11 @@ def main():
                 )
             
             options = Options()
-            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
             options.add_argument(f'user-agent={user_agent}')
             options.add_argument("--disable-gpu")
             # options.add_argument("--headless")
             options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36")
             options.add_argument("--disable-extensions")  # Disable any extensions
-            options.add_argument("--disable-gpu")  # Disable GPU acceleration
             options.add_argument("--no-sandbox")  # For certain systems like Linux
             
             driver = get_driver()
@@ -84,6 +82,13 @@ def main():
                 print("Clicked on Accept Cookies")
             except Exception as e:
                 print("Could not click on 'Accept Cookies':", e)
+
+            # Wait for the input element to be present by its ID
+            input_element = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
+            )
+            driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
+            input_element.send_keys(applicantSkills)
             
             st.code(driver.page_source)
 
