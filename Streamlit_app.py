@@ -108,7 +108,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
         
             time.sleep(2)
 
-            # st.code(driver.current_url)
+            st.code(driver.current_url)
+            st.code(driver.page_source)
 
             try:
                 WebDriverWait(driver, 10).until(
