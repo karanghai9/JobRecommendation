@@ -49,6 +49,8 @@ def scrape_permutations():
             )
             # Click the element
             element.click()
+            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            return len(divs)
         except IndexError:
             pass
 
