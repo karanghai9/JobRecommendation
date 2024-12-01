@@ -28,9 +28,13 @@ def main():
             # Call the LLM to extract skills and location
             applicant_info = callLLM(resume)
 
+            # Extract skills and location from the LLM response
+            applicantSkills, applicantLocation = extract_skills_and_location(applicant_info)
+
             # Display the extracted skills and location
             st.subheader("Extracted Information:")
-            st.write(applicant_info)
+            st.write(f"Skills: {applicantSkills}")
+            st.write(f"Location: {applicantLocation}")
 
         else:
             st.error("No text found in the PDF.")
@@ -64,6 +68,16 @@ def callLLM(resume):
 
     response = groq_llama3_llm.invoke(query)
     return response.content  # The extracted information
+
+def extract_skills_and_location(applicant_info):
+    try:
+        # Split the applicant_info string based on the defined keywords and extract relevant data
+        applicantSkills = applicant_info.split("Skills = ")[1].split("\n")[0].strip()
+        applicantLocation = applicant_info.split("Location = ")[1].split("\n")[0].strip()
+        
+        return applicantSkills, applicantLocation
+    except IndexError:
+        return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 if __name__ == "__main__":
     main()
