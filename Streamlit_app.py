@@ -91,7 +91,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             fetched_data = []
             # Loop through each div, click it and retrieve the new window URL
             for div in divs:
-                # try:
+                try:
                 #     # Ensure the element is clickable before clicking
                 #     WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
                 #     div.click()
@@ -144,8 +144,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 #     driver.switch_to.window(main_window)
                 #     print("BACK ON URL:", driver.current_url)
                 
-                # except Exception as e:
-                #     print(f"Error occurred: {e}")
+                except Exception as e:
+                    print(f"Error occurred: {e}")
         
             driver.quit()
             return opened_urls
