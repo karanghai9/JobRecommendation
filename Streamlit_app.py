@@ -87,7 +87,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                         opened_urls.append(new_url)
                         print("Opened new URL:", new_url)
                         try:
-                            # articles = driver.find_element(By.CLASS_NAME, "job-ad-display-147ed8i")
                             articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
         
                             # Ensure there are at least 3 articles
@@ -126,7 +125,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     print(f"Error occurred: {e}")
         
             driver.quit()
-            return fetched_data
+            return opened_urls
 
         except IndexError:
             pass
@@ -167,7 +166,7 @@ def main():
             fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
             # Convert the list to a JSON string
             data_str = json.dumps(fetched_data)
-            st.success(data_str)
+            st.write(data_str)
             st.success("Done")
 
             # Display the fetched job data
