@@ -10,7 +10,7 @@ import pandas as pd
 # from selenium.webdriver.chrome.service import Service
 # from webdriver_manager.chrome import ChromeDriverManager
 # from webdriver_manager.core.os_manager import ChromeType
-# from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.common.by import By
 
@@ -41,8 +41,14 @@ def scrape_permutations():
             driver.implicitly_wait(10)
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
             sleep(randint(8, 10))
-            data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
-            return str(data)
+            # data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
+            # return str(data)
+            # Wait until the element is clickable
+            element = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))
+            )
+            # Click the element
+            element.click()
         except IndexError:
             pass
 
