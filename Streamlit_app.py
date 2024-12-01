@@ -97,46 +97,29 @@ def extract_skills_and_location(applicant_info):
 
 
 def scrapeJobsData(applicantSkills, applicantLocation):
-    fetched_data = []
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)  # Launch in headless mode
-        page = browser.new_page()
-    
-        # Go to the target page
-        page.goto("https://www.stepstone.de/work/?action=facet_selected")
-    
-        # Accept cookies if present
-        try:
-            page.click("button#ccmgt_explicit_accept")
-            print("Clicked on Accept Cookies")
-        except Exception as e:
-            print("Could not click on 'Accept Cookies':", e)
-    
-        # Fill in skills and location
-        page.fill('input[placeholder="(job title, skill, or company)"]', applicantSkills)
-        page.fill('input[placeholder="(city or 5-digit zip code)"]', applicantLocation)
-    
-        # Click the search button
-        page.click('button[data-at="searchbar-search-button"]')
-        print("Search button clicked!")
-    
-        # Wait for results to load
-        page.wait_for_selector('.res-nehv70')
-    
-        # Get job data
-        job_listings = page.query_selector_all('.res-nehv70')
-    
-        for job in job_listings[:10]:  # Limit to the first 10 results
-            job_url = job.query_selector('a').get_attribute('href')
-            job_description = job.text_content()
-    
-            # Store the job information
-            fetched_data.append({"URL": job_url, "data": job_description})
-    
-        # Close the browser
-        browser.close()
-    
-    return fetched_data
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.core.os_manager import ChromeType
+
+    @st.cache_resource
+    def get_driver():
+        return webdriver.Chrome(
+            service=Service(
+                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ),
+            options=options,
+        )
+
+    options = Options()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
+
+    driver = get_driver()
+    driver.get("https://www.stepstone.de/work/?action=facet_selected")
+
+    st.code(driver.page_source)
 
 if __name__ == "__main__":
     main()
