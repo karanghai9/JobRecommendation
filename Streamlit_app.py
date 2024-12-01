@@ -3,14 +3,7 @@ from langchain_groq import ChatGroq
 from io import BytesIO
 import PyPDF2
 import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from playwright.sync_api import sync_playwright
 
 # Define Groq API key and model
 GROQ_API_KEY = "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"  # Replace with your actual Groq API key
@@ -102,133 +95,47 @@ def extract_skills_and_location(applicant_info):
     except IndexError:
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
+
 def scrapeJobsData(applicantSkills, applicantLocation):
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('--headless')
-    # user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36'
-    # options.add_argument(f'user-agent={user_agent}')
-    # driver = webdriver.Chrome(options=options)
-
-
-
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    
-    # Automatically manage the chromedriver using webdriver-manager
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
-    # Open the target URL
-    driver.get("https://www.stepstone.de/work/?action=facet_selected")
-
-    # Click the 'Accept Cookies' only once
-    try:
-        WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))).click()
-        print("Clicked on Accept Cookies")
-    except Exception as e:
-        print("Could not click on 'Accept Cookies':", e)
-
-    # Wait for the input element to be present by its ID
-    input_element = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
-    )
-    driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
-    input_element.send_keys(applicantSkills)
-
-    # Locate the second input element (location input) using XPath by placeholder
-    location_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
-    )
-    driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
-    location_input.send_keys(applicantLocation)
-
-    # Locate the search button and click it
-    search_button = WebDriverWait(driver, 5).until(
-        EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-    )
-    search_button.click()
-    print("Search button clicked successfully!")
-
-    # Optional: Pause to observe the result
-    time.sleep(2)
-
-    WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "res-nehv70")))
-    # Find all divs with the desired class name
-    divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
-    # Store the main window handle
-    main_window = driver.current_window_handle
-    print("works till here:", len(divs))
-
-    divs = divs[:10]
-
-    # Store the URLs to track if the page is already opened
-    opened_urls = []
     fetched_data = []
-
-    # Loop through each div, click it and retrieve the new window URL
-    for div in divs:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)  # Launch in headless mode
+        page = browser.new_page()
+    
+        # Go to the target page
+        page.goto("https://www.stepstone.de/work/?action=facet_selected")
+    
+        # Accept cookies if present
         try:
-            # Ensure the element is clickable before clicking
-            WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
-            div.click()
-            # Wait for the new window to load
-            time.sleep(2)
-            # Get the current URL (before switching to the new window)
-            current_url = driver.current_url
-            print("Current URL:", current_url)
-            # Switch to the new window
-            main_window = driver.current_window_handle  # Store main window handle
-            for handle in driver.window_handles:
-                if handle != main_window:
-                    driver.switch_to.window(handle)
-                    break
-            # Get the new window URL
-            new_url = driver.current_url
-            # Optional: You can extract more details from the new page if needed here
-
-            # Check if the new URL has been already processed
-            if new_url in opened_urls:
-                driver.close()
-                driver.switch_to.window(main_window)
-                continue
-            else:
-                opened_urls.append(new_url)
-                print("Opened new URL:", new_url)
-                try:
-                    # articles = driver.find_element(By.CLASS_NAME, "job-ad-display-147ed8i")
-                    articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
-
-                    # Ensure there are at least 3 articles
-                    if len(articles) >= 3:
-                        # Access the third article (index 2)
-                        article = articles[2]
-
-                        # Get the text content (visible text) of the third article
-                        job_requirements = article.text
-
-                        # Print the details of the third article
-                        print(f"Text Content:\n{job_requirements}")
-                    else:
-                        print("Less than 3 articles found.")
-
-                    # To get only the visible text, use:
-                    # article_content = article.text
-                except Exception as e:
-                    print("Error fetching article content: {e}")
-
-                fetched_data.append({"URL": new_url, "data": job_requirements})
-
-            # Close the new window and switch back to the main window
-            driver.close()
-            driver.switch_to.window(main_window)
-            print("BACK ON URL:", driver.current_url)
-
+            page.click("button#ccmgt_explicit_accept")
+            print("Clicked on Accept Cookies")
         except Exception as e:
-            print(f"Error occurred: {e}")
-
-    driver.quit()
+            print("Could not click on 'Accept Cookies':", e)
+    
+        # Fill in skills and location
+        page.fill('input[placeholder="(job title, skill, or company)"]', applicantSkills)
+        page.fill('input[placeholder="(city or 5-digit zip code)"]', applicantLocation)
+    
+        # Click the search button
+        page.click('button[data-at="searchbar-search-button"]')
+        print("Search button clicked!")
+    
+        # Wait for results to load
+        page.wait_for_selector('.res-nehv70')
+    
+        # Get job data
+        job_listings = page.query_selector_all('.res-nehv70')
+    
+        for job in job_listings[:10]:  # Limit to the first 10 results
+            job_url = job.query_selector('a').get_attribute('href')
+            job_description = job.text_content()
+    
+            # Store the job information
+            fetched_data.append({"URL": job_url, "data": job_description})
+    
+        # Close the browser
+        browser.close()
+    
     return fetched_data
 
 if __name__ == "__main__":
