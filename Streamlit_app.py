@@ -49,8 +49,84 @@ def scrape_permutations():
             )
             # Click the element
             element.click()
+            
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
-            return len(divs)
+            divs = divs[:2]
+            
+            # Store the URLs to track if the page is already opened
+            opened_urls = []
+            fetched_data = []
+            # Loop through each div, click it and retrieve the new window URL
+                for div in divs:
+                    try:
+                        # Ensure the element is clickable before clicking
+                        WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
+                        div.click()
+                        # Wait for the new window to load
+                        time.sleep(2)
+                        # Get the current URL (before switching to the new window)
+                        current_url = driver.current_url
+                        print("Current URL:", current_url)
+                        # Switch to the new window
+                        main_window = driver.current_window_handle  # Store main window handle
+                        for handle in driver.window_handles:
+                            if handle != main_window:
+                                driver.switch_to.window(handle)
+                                break
+                        # Get the new window URL
+                        new_url = driver.current_url
+                        # Optional: You can extract more details from the new page if needed here
+            
+                        # Check if the new URL has been already processed
+                        if new_url in opened_urls:
+                            driver.close()
+                            driver.switch_to.window(main_window)
+                            continue
+                        else:
+                            opened_urls.append(new_url)
+                            print("Opened new URL:", new_url)
+                            try:
+                                # articles = driver.find_element(By.CLASS_NAME, "job-ad-display-147ed8i")
+                                articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
+            
+                                # Ensure there are at least 3 articles
+                                if len(articles) >= 3:
+                                    # Access the third article (index 2)
+                                    article = articles[2]
+            
+                                    # Get the text content (visible text) of the third article
+                                    job_requirements = article.text
+            
+                                    # Print the details of the third article
+                                    print(f"Text Content:\n{job_requirements}")
+                                else:
+                                    print("Less than 3 articles found.")
+            
+                                # To get only the visible text, use:
+                                # article_content = article.text
+                            except Exception as e:
+                                print("Error fetching article content: {e}")
+            
+                            fetched_data.append({"URL": new_url, "data": job_requirements})
+            
+                        # Close the new window and switch back to the main window
+                        driver.close()
+                        driver.switch_to.window(main_window)
+                        print("BACK ON URL:", driver.current_url)
+            
+                        # try:
+                        #     # Wait until the element is clickable, but handle cases where it's not present
+                        #     WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))).click()
+                        #     print("Clicked on Accept Cookies")
+                        # except Exception as e:
+                        #     print(f"Element 'ccmgt_explicit_accept' not found or clickable: {e}")
+                    
+                    except Exception as e:
+                        print(f"Error occurred: {e}")
+            
+                driver.quit()
+                return fetched_data
+
         except IndexError:
             pass
 
