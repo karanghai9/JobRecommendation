@@ -3,7 +3,11 @@ from langchain_groq import ChatGroq
 from io import BytesIO
 import PyPDF2
 import time
-from playwright.sync_api import sync_playwright
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 
 # Define Groq API key and model
 GROQ_API_KEY = "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"  # Replace with your actual Groq API key
@@ -44,7 +48,7 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             # Scrape jobs based on extracted skills and location
-            fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
+            scrapeJobsData()
 
             # Display the fetched job data
             st.subheader("Job Recommendations:")
@@ -96,13 +100,7 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 
-def scrapeJobsData(applicantSkills, applicantLocation):
-    from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service
-    from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.core.os_manager import ChromeType
-
+def scrapeJobsData():
     @st.cache_resource
     def get_driver():
         return webdriver.Chrome(
