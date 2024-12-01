@@ -125,7 +125,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     print(f"Error occurred: {e}")
         
             driver.quit()
-            return json(fetched_data)
+            return fetched_data
 
         except IndexError:
             pass
@@ -165,8 +165,8 @@ def main():
 
             fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
             # Convert the list to a JSON string
-            data_str = json.dumps(fetched_data)
-            st.write(data_str)
+            # data_str = json.dumps(fetched_data)
+            st.json(data_str)
             st.success("Done")
 
             # Display the fetched job data
