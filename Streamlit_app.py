@@ -54,7 +54,7 @@ def main():
             st.write(f"Location: {applicantLocation}")
 
             # Scrape jobs based on extracted skills and location
-            # scrapeJobsData()
+            scrapeJobsData()
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
@@ -104,24 +104,26 @@ def extract_skills_and_location(applicant_info):
     except IndexError:
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
-@st.cache_resource
-def get_driver():
-    return webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-        ),
-        options=options,
-    )
+def scrapeJobsData():
+    @st.cache_resource
+    def get_driver():
+        return webdriver.Chrome(
+            service=Service(
+                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ),
+            options=options,
+        )
+    
+    options = Options()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
+    
+    driver = get_driver()
+    driver.get("http://example.com")
+    
+    st.code(driver.page_source)
+    
+    st.code(driver.page_source)
 
-options = Options()
-options.add_argument("--disable-gpu")
-options.add_argument("--headless")
-
-driver = get_driver()
-driver.get("http://example.com")
-
-st.code(driver.page_source)
-
-st.code(driver.page_source)
 if __name__ == "__main__":
     main()
