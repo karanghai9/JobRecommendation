@@ -74,22 +74,17 @@ def main():
             options.add_argument("--no-sandbox")  # For certain systems like Linux
             
             driver = get_driver()
-            driver.get("https://www.stepstone.de/work/?action=facet_selected")
+            # driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            try:
-                WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))).click()
-                print("Clicked on Accept Cookies")
-            except Exception as e:
-                print("Could not click on 'Accept Cookies':", e)
-
-            # Wait for the input element to be present by its ID
-            input_element = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
-            )
-            driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
-            input_element.send_keys(applicantSkills)
-            
-            st.code(driver.page_source)
+            url = 'https://quotes.toscrape.com/'
+            driver.get(url)
+            quotes = driver.find_elements('xpath', '//span[@class="text"]')
+            data = []
+            for q in quotes:
+                data.append(q.text)
+            driver.quit()
+            df = pd.DataFrame(data, columns=['Quotes'])
+            st.dataframe(df)
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
