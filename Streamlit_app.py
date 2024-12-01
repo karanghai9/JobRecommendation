@@ -75,7 +75,13 @@ def main():
             driver = get_driver()
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept")))
+            try:
+                accept_button = WebDriverWait(driver, 50).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[text()='Accept Cookies']"))  # XPath as an alternative
+                )
+                accept_button.click()
+            except TimeoutException as e:
+                print("Could not find Accept Cookies button:", e)
             
             st.code(driver.page_source)
 
