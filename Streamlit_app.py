@@ -46,11 +46,6 @@ def main():
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
 
-            # Display the extracted skills and location
-            st.subheader("Extracted Information:")
-            st.write(f"Skills: {applicantSkills}")
-            st.write(f"Location: {applicantLocation}")
-
             # Scrape jobs based on extracted skills and location
             fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
 
