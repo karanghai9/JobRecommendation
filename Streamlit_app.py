@@ -146,8 +146,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #         driver.switch_to.window(main_window)
             #         print("BACK ON URL:", driver.current_url)
                 
-                except Exception as e:
-                    print(f"Error occurred: {e}")
+                # except Exception as e:
+                #     print(f"Error occurred: {e}")
         
             driver.quit()
             return opened_urls
