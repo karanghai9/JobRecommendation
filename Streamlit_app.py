@@ -114,7 +114,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
                 )
-                divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+                divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
             except TimeoutException:
                 st.write("Divs with class 'res-nehv70' did not load in time.")
                 
