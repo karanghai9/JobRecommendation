@@ -102,7 +102,8 @@ def main():
             # driver = get_driver()
             # driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            scrape_permutations()
+            msg = scrape_permutations()
+            st.success(msg)
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
