@@ -1,3 +1,2 @@
 PyPDF2
-ChatGroq
-BytesIO
+langchain_groq
