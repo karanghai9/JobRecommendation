@@ -3,3 +3,4 @@ PyPDF2
 langchain_groq
 seleniumbase
 webdriver-manager
+pandas
