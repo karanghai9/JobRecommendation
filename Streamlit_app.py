@@ -51,9 +51,9 @@ def main():
 
             # Display the fetched job data
             st.subheader("Job Recommendations:")
-            for job in fetched_data:
-                st.write(f"Job URL: {job['URL']}")
-                st.write(f"Job Description: {job['data']}")
+            # for job in fetched_data:
+            #     st.write(f"Job URL: {job['URL']}")
+            #     st.write(f"Job Description: {job['data']}")
 
         else:
             st.error("No text found in the PDF.")
