@@ -55,18 +55,18 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             
-            # input_element = WebDriverWait(driver, 5).until(
-            #     EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
-            # )
-            # driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
-            # input_element.send_keys(applicantSkills)
+            input_element = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
+            )
+            driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
+            input_element.send_keys(applicantSkills)
         
-            # # Locate the second input element (location input) using XPath by placeholder
-            # location_input = WebDriverWait(driver, 5).until(
-            #     EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
-            # )
-            # driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
-            # location_input.send_keys(applicantLocation)
+            # Locate the second input element (location input) using XPath by placeholder
+            location_input = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
+            )
+            driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
+            location_input.send_keys(applicantLocation)
         
             # # Locate the search button and click it
             # search_button = WebDriverWait(driver, 5).until(
