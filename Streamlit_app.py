@@ -166,7 +166,7 @@ def main():
             fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
             # Convert the list to a JSON string
             # data_str = json.dumps(fetched_data)
-            st.json(data_str)
+            st.json(fetched_data)
             st.success("Done")
 
             # Display the fetched job data
