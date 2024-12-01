@@ -1,4 +1,5 @@
+Streamlit
 PyPDF2
 langchain_groq
 selenium
-webdriver-manager
+playwright
