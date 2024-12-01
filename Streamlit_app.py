@@ -79,10 +79,11 @@ def main():
             driver = get_driver()
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            # Wait for the page to load (you can use any element that appears after the page is loaded)
-            WebDriverWait(driver, 50).until(
-                EC.presence_of_element_located((By.TAG_NAME, "body"))  # Waiting for the body tag to be present
-            )
+            try:
+                WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))).click()
+                print("Clicked on Accept Cookies")
+            except Exception as e:
+                print("Could not click on 'Accept Cookies':", e)
             
             st.code(driver.page_source)
 
