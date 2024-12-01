@@ -53,13 +53,6 @@ def main():
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
 
-            options = Options()
-            options.add_argument("--disable-gpu")
-            options.add_argument("--headless")
-            
-            driver = get_driver()
-            driver.get("http://google.com")
-
             # Scrape jobs based on extracted skills and location
             # scrapeJobsData()
 
@@ -119,6 +112,15 @@ def get_driver():
         ),
         options=options,
     )
+
+options = Options()
+options.add_argument("--disable-gpu")
+options.add_argument("--headless")
+
+driver = get_driver()
+driver.get("http://example.com")
+
+st.code(driver.page_source)
 
 st.code(driver.page_source)
 if __name__ == "__main__":
