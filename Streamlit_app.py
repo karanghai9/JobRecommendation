@@ -75,7 +75,7 @@ def main():
             driver = get_driver()
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70")))  # Adjust the class name as needed
+            WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept")))
             
             st.code(driver.page_source)
 
