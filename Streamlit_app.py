@@ -24,7 +24,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 
-def scrape_permutations():
+def scrapeJobsData(applicantSkills, applicantLocation):
 
     options = Options()
     options.add_argument("--headless")
@@ -51,7 +51,7 @@ def scrape_permutations():
             element.click()
             
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
-            divs = divs[:2]
+            divs = divs[:1]
             
             # Store the URLs to track if the page is already opened
             opened_urls = []
@@ -162,28 +162,10 @@ def main():
             st.subheader("Extracted Information:")
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
-            
-            # @st.cache_resource
-            # def get_driver():
-            #     return webdriver.Chrome(
-            #         service=Service(
-            #             ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-            #         ),
-            #         options=options,
-            #     )
-            
-            # options = Options()
-            # options.add_argument("--disable-gpu")
-            # options.add_argument("--headless")
-            # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.5615.138 Safari/537.36")
-            # options.add_argument("--disable-extensions")  # Disable any extensions
-            # options.add_argument("--no-sandbox")  # For certain systems like Linux
-            
-            # driver = get_driver()
-            # driver.get("https://www.stepstone.de/work/?action=facet_selected")
 
-            msg = scrape_permutations()
-            st.success(msg)
+            fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
+            st.success(str(fetched_data))
+            st.success("Done")
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
