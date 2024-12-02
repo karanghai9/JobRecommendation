@@ -76,31 +76,12 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
             st.code(driver.current_url)
             st.code(driver.page_source)
-
-
-            # Locate the button
-            search_button = WebDriverWait(driver, 10).until(
+            
+            # Locate the search button and click it
+            search_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
             )
-            
-            # Scroll into view
-            driver.execute_script("arguments[0].scrollIntoView(true);", search_button)
-            
-            # Ensure it’s not busy
-            while search_button.get_attribute("aria-busy") == "true":
-                time.sleep(0.5)
-            
-            # Attempt click using JavaScript
-            try:
-                driver.execute_script("arguments[0].click();", search_button)
-                print("Button clicked via JavaScript!")
-            except Exception as e:
-                print(f"Failed to click via JavaScript: {e}")
-            
-            # Backup with ActionChains
-            actions = ActionChains(driver)
-            actions.move_to_element(search_button).click().perform()
-            print("Button clicked via ActionChains!")
+            search_button.click()
 
 
             
