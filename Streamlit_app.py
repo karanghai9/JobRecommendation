@@ -83,13 +83,13 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
-            # try:
-            #     WebDriverWait(driver, 10).until(
-            #         EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
-            #     )
-            #     divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
-            # except TimeoutException:
-            #     st.write("Divs with class 'res-nehv70' did not load in time.")
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
+                )
+                divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
+            except TimeoutException:
+                st.write("Divs with class 'res-nehv70' did not load in time.")
  
             # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
@@ -100,7 +100,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # else:
             #     st.write("No div found with class 'res-nehv70'")
 
-            # st.write(len(divs))
+            st.write(len(divs))
             # divs = divs[:6]
             
             # Store the URLs to track if the page is already opened
