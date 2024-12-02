@@ -109,16 +109,18 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # Loop through each div, click it and retrieve the new window URL
             for div in divs:
                 try:
+                    main_window = driver.current_window_handle  # Store main window handle
+                    # Get the current URL (before switching to the new window)
+                    current_url = driver.current_url
+                    st.write("Current URL:", current_url)
+
                     # Ensure the element is clickable before clicking
                     WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
                     div.click()
                     # Wait for the new window to load
                     time.sleep(2)
-                    # Get the current URL (before switching to the new window)
-                    current_url = driver.current_url
-                    print("Current URL:", current_url)
+
                     # Switch to the new window
-                    main_window = driver.current_window_handle  # Store main window handle
                     for handle in driver.window_handles:
                         if handle != main_window:
                             driver.switch_to.window(handle)
@@ -163,9 +165,9 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 
                 except Exception as e:
                     print(f"Error occurred: {e}")
-        
+
             driver.quit()
-            return fetched_data
+            return opened_urls
 
         except IndexError:
             pass
