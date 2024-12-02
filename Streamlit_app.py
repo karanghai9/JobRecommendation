@@ -82,56 +82,42 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             
-
-            # Get all window handles
+            # Get all the window handles
             window_handles = driver.window_handles
             
-            # Assuming you're closing the child window, ensure that the main window is still open
-            main_window = driver.current_window_handle  # Store main window handle
+            # Print the handles of all open windows or tabs
+            st.code(str(window_handles))
+
             
             # Wait for the element to be clickable
-            try:
-                # Wait for any iframe or popup to disappear before clicking
-                WebDriverWait(driver, 10).until(
-                    EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
-                )
+            # try:
+            #     # Wait for any iframe or popup to disappear before clicking
+            #     WebDriverWait(driver, 10).until(
+            #         EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
+            #     )
             
-                # Wait for the search button to be clickable
-                search_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-                )
+            #     # Wait for the search button to be clickable
+            #     search_button = WebDriverWait(driver, 10).until(
+            #         EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            #     )
             
-                # Click the search button
-                search_button.click()
-                st.write("Search button clicked successfully-1!")
+            #     # Click the search button
+            #     search_button.click()
+            #     st.write("Search button clicked successfully-1!")
             
-            except ElementClickInterceptedException as e:
-                # Handle situations where an element is blocked by something else (like a popup or iframe)
-                # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
-                # Optionally: try using JavaScript to click the element
-                driver.execute_script("arguments[0].click();", search_button)
-                st.write("Search button clicked successfully-2!")
+            # except ElementClickInterceptedException as e:
+            #     # Handle situations where an element is blocked by something else (like a popup or iframe)
+            #     # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
+            #     # Optionally: try using JavaScript to click the element
+            #     driver.execute_script("arguments[0].click();", search_button)
+            #     st.write("Search button clicked successfully-2!")
             
-            except TimeoutException as e:
-                # Handle timeout if element is not found within the wait time
-                print(f"Error: Timeout waiting for the search button: {e}")
-                # st.write("Search button COULDN'T be clicked!")
+            # except TimeoutException as e:
+            #     # Handle timeout if element is not found within the wait time
+            #     print(f"Error: Timeout waiting for the search button: {e}")
+            #     # st.write("Search button COULDN'T be clicked!")
 
             time.sleep(2)
-            
-            st.code(driver.current_url)
-            
-            driver.close()
-
-
-            # Ensure that we're switching back to the main window
-            # If there are multiple windows, make sure the main window handle exists in the list of window handles
-            if main_window in window_handles:
-                driver.switch_to.window(main_window)
-            else:
-                print("Main window handle not found.")
-            
-            # Optionally, capture the current URL and inspect the result
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
