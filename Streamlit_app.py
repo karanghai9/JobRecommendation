@@ -137,6 +137,11 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
                 )
                 st.success("Found clickable")
+                search_button = WebDriverWait(driver, 20).until(
+                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+                )
+                search_button.click()
+                st.success("Clicked")
             except TimeoutException as e:
                 print("Element not found in time!")
                 st.error("Search button not found.")
