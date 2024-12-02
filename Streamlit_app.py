@@ -42,6 +42,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--disable-web-security")
     options.add_argument("--allow-running-insecure-content")
+    options.add_argument('--ignore-ssl-errors=yes')
 
     with webdriver.Chrome(options=options) as driver:
         try:
