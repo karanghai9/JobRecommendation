@@ -77,17 +77,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             st.code(driver.current_url)
             # st.code(driver.page_source)
             
-
-
-
-            # # Wait for the iframe to become invisible
-            # WebDriverWait(driver, 20).until(
-            #     EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
-            # )
-            # time.sleep(2)
-
-
-            
             # Wait for the element to be clickable
             try:
                 # Wait for any iframe or popup to disappear before clicking
@@ -97,8 +86,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
                 # Wait for the search button to be clickable
                 search_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "sbr-60erey")]'))
-                    # EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
                 )
             
                 # Click the search button
