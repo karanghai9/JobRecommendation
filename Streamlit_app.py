@@ -123,7 +123,10 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             window_handles = driver.window_handles
             # Print the handles of all open windows or tabs
             st.code(str(window_handles))
-            
+            st.code(driver.current_url)
+
+            driver.back()
+
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
