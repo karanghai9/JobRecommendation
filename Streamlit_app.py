@@ -130,6 +130,13 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
+            # Locate the search button and click it
+            search_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            )
+            search_button.click()
+            st.success("Search button clicked successfully!")
+
 
 
             # try:
