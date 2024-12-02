@@ -72,7 +72,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
             # Wait for the search button to be present
             search_button = WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+                EC.presence_of_element_located((By.XPATH, '//button[text()="Find Jobs"]'))
             )
             driver.execute_script("arguments[0].removeAttribute('readonly');", search_button)
             search_button.send_keys(Keys.RETURN)
