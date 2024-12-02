@@ -99,7 +99,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # else:
             #     st.write("No div found with class 'res-nehv70'")
 
-            main_window = driver.current_window_handle
             st.write(len(divs))
             divs = divs[:6]
             
