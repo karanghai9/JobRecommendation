@@ -58,47 +58,34 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # Click the element
             element.click()
 
-
-
-
-            
             input_element = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(job title, skill, or company)"]'))
             )
             driver.execute_script("arguments[0].removeAttribute('readonly');", input_element)
             input_element.send_keys(applicantSkills)
         
-            # Locate the second input element (location input) using XPath by placeholder
             location_input = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="(city or 5-digit zip code)"]'))
             )
             driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
             location_input.send_keys(applicantLocation)
 
-            st.code(driver.current_url)
-            # st.code(driver.page_source)
-
-
-
-
-
-
-
-            try:
-                # Wait for the search button to be present
-                search_button = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-                )
-                # Simulate pressing 'Enter' on the search button using send_keys
-                search_button.send_keys(Keys.RETURN)
-                st.success("Search button clicked (via send_keys)!")
-                
-            except TimeoutException as e:
-                print(f"Error: {e}")
-                st.error("Search button not found.")
+            # Wait for the search button to be present
+            search_button = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            )
+            driver.execute_script("arguments[0].removeAttribute('readonly');", search_button)
+            search_button.send_keys(Keys.RETURN)
             
+            st.success("Search button clicked (via send_keys)!")
+
             st.code(driver.current_url)
             # st.code(driver.page_source)
+
+
+
+
+
 
             try:
                 WebDriverWait(driver, 10).until(
@@ -107,7 +94,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
             except TimeoutException:
                 st.write("Divs with class 'res-nehv70' did not load in time.")
-                
+ 
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
             #Get the first div's HTML
@@ -117,7 +104,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # else:
             #     st.write("No div found with class 'res-nehv70'")
     
-            divs = divs[:1]
+            divs = divs[:6]
             
             # Store the URLs to track if the page is already opened
             opened_urls = []
