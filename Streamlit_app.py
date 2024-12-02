@@ -165,7 +165,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     # Close the new window and switch back to the main window
                     driver.close()
                     driver.switch_to.window(main_window)
-                    print("BACK ON URL:", driver.current_url)
+                    st.write("BACK ON URL:", driver.current_url)
                 
                 except Exception as e:
                     print(f"Error occurred: {e}")
