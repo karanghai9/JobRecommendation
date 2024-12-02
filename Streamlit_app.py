@@ -70,13 +70,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
             location_input.send_keys(applicantLocation)
 
-            # # Wait for the search button to be present
-            # search_button = WebDriverWait(driver, 20).until(
-            #     EC.presence_of_element_located((By.XPATH, '//button[@aria-label="Find Jobs"]'))
-            # )
-            # driver.execute_script("arguments[0].removeAttribute('readonly');", search_button)
-            # search_button.send_keys(Keys.RETURN)
-
             location_input.send_keys(Keys.RETURN)
             st.success("Search button clicked (via send_keys)!")
             time.sleep(5)
@@ -85,13 +78,13 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
             try:
                 WebDriverWait(driver, 20).until(
-                    EC.presence_of_all_elements_located((By.CLASS_NAME, "res-nehv70"))
+                    EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
                 )
                 divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
             except TimeoutException:
                 st.write("Divs with class 'res-nehv70' did not load in time.")
  
-            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
             #Get the first div's HTML
             # if divs:
