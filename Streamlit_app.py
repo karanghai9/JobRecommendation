@@ -85,7 +85,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
                 # Wait for the search button to be clickable
                 search_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+                    EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "sbr-60erey")]'))
+                    # EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
                 )
             
                 # Click the search button
