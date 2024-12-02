@@ -72,7 +72,10 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             )
             driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
             location_input.send_keys(applicantLocation)
-        
+
+            st.code(driver.current_url)
+            st.code(driver.page_source)
+            
             # Wait for the element to be clickable
             try:
                 # Wait for any iframe or popup to disappear before clicking
