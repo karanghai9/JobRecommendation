@@ -74,7 +74,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             st.success("Search button clicked (via send_keys)!")
             time.sleep(5)
             st.code(driver.current_url)
-            # st.code(driver.page_source)
+            st.code(driver.page_source)
 
 
 
