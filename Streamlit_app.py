@@ -75,6 +75,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             location_input.send_keys(applicantLocation)
 
             st.code(driver.current_url)
+            main_window = driver.current_window_handle  # Store main window handle
             # st.code(driver.page_source)
             
             # Wait for the element to be clickable
@@ -113,7 +114,10 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             
-            st.success(driver.current_url)
+            st.code(driver.current_url)
+            driver.close()
+            driver.switch_to.window(main_window)
+            st.code(driver.current_url)
             # st.code(driver.page_source)
 
 
