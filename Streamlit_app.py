@@ -26,6 +26,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 
 def scrapeJobsData(applicantSkills, applicantLocation):
 
