@@ -97,99 +97,25 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 print(f"Error: {e}")
                 st.error("Search button not found.")
             
-            # Wait for the element to be clickable
-            # try:
-            #     # Wait for any iframe or popup to disappear before clicking
-            #     WebDriverWait(driver, 10).until(
-            #         EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
-            #     )
-            
-            #     # Wait for the search button to be clickable
-            #     search_button = WebDriverWait(driver, 10).until(
-            #         EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            #     )
-            
-            #     # Click the search button
-            #     search_button.click()
-            #     st.write("Search button clicked successfully-1!")
-            
-            # except ElementClickInterceptedException as e:
-            #     # Handle situations where an element is blocked by something else (like a popup or iframe)
-            #     # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
-            #     # Optionally: try using JavaScript to click the element
-            #     driver.execute_script("arguments[0].click();", search_button)
-            #     st.write("Search button clicked successfully-2!")
-            
-            # except TimeoutException as e:
-            #     # Handle timeout if element is not found within the wait time
-            #     print(f"Error: Timeout waiting for the search button: {e}")
-            #     # st.write("Search button COULDN'T be clicked!")
-
-            # time.sleep(2)
-            
-            # Get all the window handles
-            # window_handles = driver.window_handles
-            # Print the handles of all open windows or tabs
-            # st.code(str(window_handles))
-            
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
-
-            # Check if the element is present
-            # try:
-            #     WebDriverWait(driver, 20).until(
-            #         EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            #     )
-            #     st.success("Found clickable")
-            #     search_button = WebDriverWait(driver, 20).until(
-            #         EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            #     )
-            #     search_button.click()
-            #     st.success("Clicked")
-            # except TimeoutException as e:
-            #     print("Element not found in time!")
-            #     st.error("Search button not found.")
-
-    
-            # Locate the search button and click it
-            # search_button = WebDriverWait(driver, 20).until(
-            #     EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            # )
-            # search_button.click()
-            # st.success("Search button clicked successfully!")
-
-
-
-            # try:
-            #     response = requests.get("https://www.google.com", verify=False)
-            #     st.write(f"Response Status: Done")
-            # except Exception as e:
-            #     st.write(f"Error accessing URL: {e}")
-
-
-            # try:
-            #     response = requests.get("https://www.stepstone.de/work/llms_langchain_rag_sap-fiori-ui5_fine-tuning_python_machine-learning_deep-learning_reactjs_react-native_javascript_expressjs_mongodb_tensorflow_keras_pandas_numpy_scikit-learn_matplotlib_git_docker_ci-cd_agile/in-walldorf_69190?radius=30&searchOrigin=Resultlist_top-search&q=LLMs,%20LangChain,%20RAG,%20SAP%20Fiori%20Ui5,%20Fine%20tuning,%20Python,%20Machine%20Learning,%20Deep%20Learning,%20ReactJS,%20React%20Native,%20JavaScript,%20ExpressJS,%20MongoDB,%20Tensorflow,%20Keras,%20Pandas,%20Numpy,%20Scikit-learn,%20Matplotlib,%20Git,%20Docker,%20CI%2FCD,%20Agile", verify=False)
-            #     st.write(f"Response Status: {response.status_code}")
-            # except Exception as e:
-            #     st.write(f"Error accessing URL: {e}")
-
-            # try:
-            #     WebDriverWait(driver, 10).until(
-            #         EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
-            #     )
-            #     divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
-            # except TimeoutException:
-            #     st.write("Divs with class 'res-nehv70' did not load in time.")
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
+                )
+                divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
+            except TimeoutException:
+                st.write("Divs with class 'res-nehv70' did not load in time.")
                 
-            # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
-            # Get the first div's HTML
-            # if divs:
-            #     div_html = divs[0].get_attribute("outerHTML")
-            #     st.write(div_html)
-            # else:
-            #     st.write("No div found with class 'res-nehv70'")
+            Get the first div's HTML
+            if divs:
+                div_html = divs[0].get_attribute("outerHTML")
+                st.write(div_html)
+            else:
+                st.write("No div found with class 'res-nehv70'")
     
             # divs = divs[:1]
             
