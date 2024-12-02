@@ -86,11 +86,22 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
             try:
                 WebDriverWait(driver, 20).until(
-                    EC.visibility_of_element_located((By.CLASS_NAME, "res-nehv70"))
+                    EC.presence_of_all_elements_located((By.CLASS_NAME, "res-1foik6i"))
                 )
-                divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
+                
+                # Find all <a> tags with the class 'res-1foik6i'
+                a_tags = driver.find_elements(By.CLASS_NAME, "res-1foik6i")
+                
+                # Extract href attributes
+                hrefs = [a.get_attribute('href') for a in a_tags]
+                
+                # Display the links in Streamlit
+                st.write("Extracted Job Links:")
+                for href in hrefs:
+                    st.write(href)
+            
             except TimeoutException:
-                st.write("Divs with class 'res-nehv70' did not load in time.")
+                st.error("Elements with class 'res-1foik6i' did not load in time.")
 
             # try:
             #     WebDriverWait(driver, 20).until(
