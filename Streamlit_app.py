@@ -5,6 +5,7 @@ import PyPDF2
 import time
 import pandas as pd
 import json
+import requests
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -92,24 +93,30 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             
                 # Click the search button
                 search_button.click()
-                st.write("Search button clicked successfully-1!")
+                # st.write("Search button clicked successfully-1!")
             
             except ElementClickInterceptedException as e:
                 # Handle situations where an element is blocked by something else (like a popup or iframe)
                 # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
                 # Optionally: try using JavaScript to click the element
                 driver.execute_script("arguments[0].click();", search_button)
-                st.write("Search button clicked successfully-2!")
+                # st.write("Search button clicked successfully-2!")
             
             except TimeoutException as e:
                 # Handle timeout if element is not found within the wait time
                 print(f"Error: Timeout waiting for the search button: {e}")
-                st.write("Search button COULDN'T be clicked!")
+                # st.write("Search button COULDN'T be clicked!")
         
             time.sleep(2)
 
             st.code(driver.current_url)
-            st.code(driver.page_source)
+            # st.code(driver.page_source)
+
+            try:
+                response = requests.get("https://www.stepstone.de/work/llms_langchain_rag_sap-fiori-ui5_fine-tuning_python_machine-learning_deep-learning_reactjs_react-native_javascript_expressjs_mongodb_tensorflow_keras_pandas_numpy_scikit-learn_matplotlib_git_docker_ci-cd_agile/in-walldorf_69190?radius=30&searchOrigin=Resultlist_top-search&q=LLMs,%20LangChain,%20RAG,%20SAP%20Fiori%20Ui5,%20Fine%20tuning,%20Python,%20Machine%20Learning,%20Deep%20Learning,%20ReactJS,%20React%20Native,%20JavaScript,%20ExpressJS,%20MongoDB,%20Tensorflow,%20Keras,%20Pandas,%20Numpy,%20Scikit-learn,%20Matplotlib,%20Git,%20Docker,%20CI%2FCD,%20Agile", verify=False)
+                st.write(f"Response Status: {response.status_code}")
+            except Exception as e:
+                st.write(f"Error accessing URL: {e}")
 
             try:
                 WebDriverWait(driver, 10).until(
