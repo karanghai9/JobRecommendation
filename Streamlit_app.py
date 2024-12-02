@@ -103,7 +103,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #     st.write(div_html)
             # else:
             #     st.write("No div found with class 'res-nehv70'")
-    
+
+            st.write(len(divs))
             divs = divs[:6]
             
             # Store the URLs to track if the page is already opened
