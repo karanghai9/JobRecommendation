@@ -125,34 +125,31 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #     print(f"Error: Timeout waiting for the search button: {e}")
             #     # st.write("Search button COULDN'T be clicked!")
 
-            time.sleep(2)
+            # time.sleep(2)
             
             # Get all the window handles
-            window_handles = driver.window_handles
+            # window_handles = driver.window_handles
             # Print the handles of all open windows or tabs
-            st.code(str(window_handles))
-            st.code(driver.current_url)
-
-            driver.back()
-
+            # st.code(str(window_handles))
+            
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
 
             # Check if the element is present
-            try:
-                WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-                )
-                st.success("Found clickable")
-                search_button = WebDriverWait(driver, 20).until(
-                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-                )
-                search_button.click()
-                st.success("Clicked")
-            except TimeoutException as e:
-                print("Element not found in time!")
-                st.error("Search button not found.")
+            # try:
+            #     WebDriverWait(driver, 20).until(
+            #         EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            #     )
+            #     st.success("Found clickable")
+            #     search_button = WebDriverWait(driver, 20).until(
+            #         EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            #     )
+            #     search_button.click()
+            #     st.success("Clicked")
+            # except TimeoutException as e:
+            #     print("Element not found in time!")
+            #     st.error("Search button not found.")
 
     
             # Locate the search button and click it
