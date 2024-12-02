@@ -27,6 +27,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 def scrapeJobsData(applicantSkills, applicantLocation):
 
@@ -81,41 +82,48 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
 
-            
-            # # Get all the window handles
-            # window_handles = driver.window_handles
-            
-            # # Print the handles of all open windows or tabs
-            # st.code(str(window_handles))
 
+
+            try:
+                # Wait for the search button to be present
+                search_button = WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+                )
+                # Simulate pressing 'Enter' on the search button using send_keys
+                search_button.send_keys(Keys.RETURN)
+                st.success("Search button clicked (via send_keys)!")
+                
+            except TimeoutException as e:
+                print(f"Error: {e}")
+                st.error("Search button not found.")
             
             # Wait for the element to be clickable
-            try:
-                # Wait for any iframe or popup to disappear before clicking
-                WebDriverWait(driver, 10).until(
-                    EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
-                )
+            # try:
+            #     # Wait for any iframe or popup to disappear before clicking
+            #     WebDriverWait(driver, 10).until(
+            #         EC.invisibility_of_element_located((By.CSS_SELECTOR, "iframe[src='https://accounts.google.com/gsi/iframe/select?client_id=199488283516-r84mu91g8mrjk465qrm48cm2int6ah7c.apps.googleusercontent.com&auto_select=true&ux_mode=popup&ui_mode=card&as=a3Jj8hUfSDzdsFJLuC0TZg&is_itp=true&channel_id=c5f755f09decb009361e2375cb6e096b364f96555ef2f55069a490bf49ebda4b&origin=https%3A%2F%2Fwww.stepstone.de&oauth2_auth_url=https%3A%2F%2Faccounts.google.com%2Fo%2Foauth2%2Fv2%2Fauth']"))
+            #     )
             
-                # Wait for the search button to be clickable
-                search_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-                )
+            #     # Wait for the search button to be clickable
+            #     search_button = WebDriverWait(driver, 10).until(
+            #         EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
+            #     )
             
-                # Click the search button
-                search_button.click()
-                st.write("Search button clicked successfully-1!")
+            #     # Click the search button
+            #     search_button.click()
+            #     st.write("Search button clicked successfully-1!")
             
-            except ElementClickInterceptedException as e:
-                # Handle situations where an element is blocked by something else (like a popup or iframe)
-                # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
-                # Optionally: try using JavaScript to click the element
-                driver.execute_script("arguments[0].click();", search_button)
-                st.write("Search button clicked successfully-2!")
+            # except ElementClickInterceptedException as e:
+            #     # Handle situations where an element is blocked by something else (like a popup or iframe)
+            #     # print(f"Error: Element was not clickable due to overlay or iframe: {e}")
+            #     # Optionally: try using JavaScript to click the element
+            #     driver.execute_script("arguments[0].click();", search_button)
+            #     st.write("Search button clicked successfully-2!")
             
-            except TimeoutException as e:
-                # Handle timeout if element is not found within the wait time
-                print(f"Error: Timeout waiting for the search button: {e}")
-                # st.write("Search button COULDN'T be clicked!")
+            # except TimeoutException as e:
+            #     # Handle timeout if element is not found within the wait time
+            #     print(f"Error: Timeout waiting for the search button: {e}")
+            #     # st.write("Search button COULDN'T be clicked!")
 
             time.sleep(2)
             
