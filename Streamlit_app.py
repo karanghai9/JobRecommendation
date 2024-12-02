@@ -117,12 +117,12 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                     # Get the current URL (before switching to the new window)
                     current_url = driver.current_url
                     st.write("Current URL:", current_url)
+                    
                     # Ensure the element is clickable before clicking
                     WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
                     div.click()
                     # Wait for the new window to load
                     time.sleep(2)
-                    
                     
                     # Switch to the new window
                     for handle in driver.window_handles:
@@ -140,7 +140,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                         continue
                     else:
                         opened_urls.append(new_url)
-                        print("Opened new URL:", new_url)
+                        st.write("Opened new URL:", new_url)
                         try:
                             articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
         
