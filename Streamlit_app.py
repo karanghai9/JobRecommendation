@@ -37,6 +37,9 @@ def scrapeJobsData(applicantSkills, applicantLocation):
     options.add_argument("--disable-features=NetworkService")
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--disable-features=VizDisplayCompositor")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--disable-web-security")
+    options.add_argument("--allow-running-insecure-content")
 
     with webdriver.Chrome(options=options) as driver:
         try:
@@ -70,15 +73,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
             location_input.send_keys(applicantLocation)
         
-            # Locate the search button and click it
-            # search_button = WebDriverWait(driver, 5).until(
-            #     EC.element_to_be_clickable((By.XPATH, '//button[@data-at="searchbar-search-button"]'))
-            # )
-            # search_button.click()
-
-
-
-
             # Wait for the element to be clickable
             try:
                 # Wait for any iframe or popup to disappear before clicking
@@ -106,11 +100,26 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 # Handle timeout if element is not found within the wait time
                 print(f"Error: Timeout waiting for the search button: {e}")
                 # st.write("Search button COULDN'T be clicked!")
-        
+
             time.sleep(2)
 
+
+
+
+
+
+            
             st.code(driver.current_url)
             # st.code(driver.page_source)
+
+
+
+            try:
+                response = requests.get("https://www.stepstone.de", verify=False)
+                st.write(f"Response Status: {response.status_code}")
+            except Exception as e:
+                st.write(f"Error accessing URL: {e}")
+
 
             try:
                 response = requests.get("https://www.stepstone.de/work/llms_langchain_rag_sap-fiori-ui5_fine-tuning_python_machine-learning_deep-learning_reactjs_react-native_javascript_expressjs_mongodb_tensorflow_keras_pandas_numpy_scikit-learn_matplotlib_git_docker_ci-cd_agile/in-walldorf_69190?radius=30&searchOrigin=Resultlist_top-search&q=LLMs,%20LangChain,%20RAG,%20SAP%20Fiori%20Ui5,%20Fine%20tuning,%20Python,%20Machine%20Learning,%20Deep%20Learning,%20ReactJS,%20React%20Native,%20JavaScript,%20ExpressJS,%20MongoDB,%20Tensorflow,%20Keras,%20Pandas,%20Numpy,%20Scikit-learn,%20Matplotlib,%20Git,%20Docker,%20CI%2FCD,%20Agile", verify=False)
