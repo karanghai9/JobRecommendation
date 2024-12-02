@@ -70,27 +70,28 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             driver.execute_script("arguments[0].removeAttribute('readonly');", location_input)
             location_input.send_keys(applicantLocation)
 
-            # Wait for the search button to be present
-            search_button = WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.XPATH, '//button[@aria-label="Find Jobs"]'))
-            )
-            driver.execute_script("arguments[0].removeAttribute('readonly');", search_button)
-            search_button.send_keys(Keys.RETURN)
-            
+            # # Wait for the search button to be present
+            # search_button = WebDriverWait(driver, 20).until(
+            #     EC.presence_of_element_located((By.XPATH, '//button[@aria-label="Find Jobs"]'))
+            # )
+            # driver.execute_script("arguments[0].removeAttribute('readonly');", search_button)
+            # search_button.send_keys(Keys.RETURN)
+
+            location_input.send_keys(Keys.RETURN)
             st.success("Search button clicked (via send_keys)!")
 
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
-            try:
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
-                )
-                divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
-            except TimeoutException:
-                st.write("Divs with class 'res-nehv70' did not load in time.")
+            # try:
+            #     WebDriverWait(driver, 10).until(
+            #         EC.presence_of_element_located((By.CLASS_NAME, "res-nehv70"))
+            #     )
+            #     divs = driver.find_elements(By.XPATH, "//div[contains(@class, 'res-nehv70')]")
+            # except TimeoutException:
+            #     st.write("Divs with class 'res-nehv70' did not load in time.")
  
-            divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
+            # divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
             #Get the first div's HTML
             # if divs:
@@ -99,71 +100,71 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # else:
             #     st.write("No div found with class 'res-nehv70'")
 
-            st.write(len(divs))
-            divs = divs[:6]
+            # st.write(len(divs))
+            # divs = divs[:6]
             
             # Store the URLs to track if the page is already opened
             opened_urls = []
             fetched_data = []
             # Loop through each div, click it and retrieve the new window URL
-            for div in divs:
-                try:
-                    main_window = driver.current_window_handle  # Store main window handle
-                    # Get the current URL (before switching to the new window)
-                    current_url = driver.current_url
-                    st.write("Current URL:", current_url)
+            # for div in divs:
+            #     try:
+            #         main_window = driver.current_window_handle  # Store main window handle
+            #         # Get the current URL (before switching to the new window)
+            #         current_url = driver.current_url
+            #         st.write("Current URL:", current_url)
 
-                    # Ensure the element is clickable before clicking
-                    WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
-                    div.click()
-                    # Wait for the new window to load
-                    time.sleep(2)
+            #         # Ensure the element is clickable before clicking
+            #         WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
+            #         div.click()
+            #         # Wait for the new window to load
+            #         time.sleep(2)
 
-                    # Switch to the new window
-                    for handle in driver.window_handles:
-                        if handle != main_window:
-                            driver.switch_to.window(handle)
-                            break
-                    # Get the new window URL
-                    new_url = driver.current_url
-                    # Optional: You can extract more details from the new page if needed here
+            #         # Switch to the new window
+            #         for handle in driver.window_handles:
+            #             if handle != main_window:
+            #                 driver.switch_to.window(handle)
+            #                 break
+            #         # Get the new window URL
+            #         new_url = driver.current_url
+            #         # Optional: You can extract more details from the new page if needed here
         
-                    # Check if the new URL has been already processed
-                    if new_url in opened_urls:
-                        driver.close()
-                        driver.switch_to.window(main_window)
-                        continue
-                    else:
-                        opened_urls.append(new_url)
-                        st.write("Opened new URL:", new_url)
-                        try:
-                            articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
+            #         # Check if the new URL has been already processed
+            #         if new_url in opened_urls:
+            #             driver.close()
+            #             driver.switch_to.window(main_window)
+            #             continue
+            #         else:
+            #             opened_urls.append(new_url)
+            #             st.write("Opened new URL:", new_url)
+            #             try:
+            #                 articles = driver.find_elements(By.CLASS_NAME, "job-ad-display-147ed8i")
         
-                            # Ensure there are at least 3 articles
-                            if len(articles) >= 3:
-                                # Access the third article (index 2)
-                                article = articles[2]
+            #                 # Ensure there are at least 3 articles
+            #                 if len(articles) >= 3:
+            #                     # Access the third article (index 2)
+            #                     article = articles[2]
         
-                                # Get the text content (visible text) of the third article
-                                job_requirements = article.text
+            #                     # Get the text content (visible text) of the third article
+            #                     job_requirements = article.text
         
-                                # Print the details of the third article
-                                print(f"Text Content:\n{job_requirements}")
-                            else:
-                                print("Less than 3 articles found.")
+            #                     # Print the details of the third article
+            #                     print(f"Text Content:\n{job_requirements}")
+            #                 else:
+            #                     print("Less than 3 articles found.")
         
-                        except Exception as e:
-                            print("Error fetching article content: {e}")
+            #             except Exception as e:
+            #                 print("Error fetching article content: {e}")
         
-                        fetched_data.append({"URL": new_url, "data": job_requirements})
+            #             fetched_data.append({"URL": new_url, "data": job_requirements})
         
-                    # Close the new window and switch back to the main window
-                    driver.close()
-                    driver.switch_to.window(main_window)
-                    st.write("BACK ON URL:", driver.current_url)
+            #         # Close the new window and switch back to the main window
+            #         driver.close()
+            #         driver.switch_to.window(main_window)
+            #         st.write("BACK ON URL:", driver.current_url)
                 
-                except Exception as e:
-                    print(f"Error occurred: {e}")
+            #     except Exception as e:
+            #         print(f"Error occurred: {e}")
 
             driver.quit()
             return opened_urls
