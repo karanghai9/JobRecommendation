@@ -125,7 +125,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # Loop through each div, click it and retrieve the new window URL
             for div in divs:
                 try:
-                    Ensure the element is clickable before clicking
+                    # Ensure the element is clickable before clicking
                     WebDriverWait(driver, 5).until(EC.element_to_be_clickable(div))
                     div.click()
                     # Wait for the new window to load
