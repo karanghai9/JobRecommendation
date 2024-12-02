@@ -110,7 +110,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 
             divs = driver.find_elements(By.CLASS_NAME, "res-nehv70")
 
-            Get the first div's HTML
+            #Get the first div's HTML
             if divs:
                 div_html = divs[0].get_attribute("outerHTML")
                 st.write(div_html)
