@@ -116,7 +116,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
             try:
                 response = requests.get("https://www.google.com", verify=False)
-                st.write(f"Response Status: {response.status_code}")
+                st.write(f"Response Status: Done")
             except Exception as e:
                 st.write(f"Error accessing URL: {e}")
 
