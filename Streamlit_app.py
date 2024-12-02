@@ -75,8 +75,19 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             location_input.send_keys(applicantLocation)
 
             st.code(driver.current_url)
-            main_window = driver.current_window_handle  # Store main window handle
             # st.code(driver.page_source)
+
+
+
+
+
+            
+
+            # Get all window handles
+            window_handles = driver.window_handles
+            
+            # Assuming you're closing the child window, ensure that the main window is still open
+            main_window = driver.current_window_handle  # Store main window handle
             
             # Wait for the element to be clickable
             try:
@@ -107,16 +118,20 @@ def scrapeJobsData(applicantSkills, applicantLocation):
                 # st.write("Search button COULDN'T be clicked!")
 
             time.sleep(2)
-
-
-
-
-
-
             
             st.code(driver.current_url)
+            
             driver.close()
-            driver.switch_to.window(main_window)
+
+
+            # Ensure that we're switching back to the main window
+            # If there are multiple windows, make sure the main window handle exists in the list of window handles
+            if main_window in window_handles:
+                driver.switch_to.window(main_window)
+            else:
+                print("Main window handle not found.")
+            
+            # Optionally, capture the current URL and inspect the result
             st.code(driver.current_url)
             # st.code(driver.page_source)
 
