@@ -177,7 +177,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             pass
 
 # Define Groq API key and model
-GROQ_API_KEY = st.secrets["auth_token"]  # Replace with your actual Groq API key
+GROQ_API_KEY = st.secrets.auth_token  # Replace with your actual Groq API key
 groq_llama3_llm = ChatGroq(
     temperature=0.4,
     groq_api_key=GROQ_API_KEY,
