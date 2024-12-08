@@ -9,3 +9,5 @@ aiohttp
 asyncio
 httpx
 playwright
+lxml
+bs4
