@@ -33,6 +33,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 async def fetch_url(driver_url):
+    st.write("fetch_url called with: ", driver_url)
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(driver_url, ssl=True) as response:
@@ -42,14 +43,8 @@ async def fetch_url(driver_url):
     except aiohttp.ClientError as e:
         st.code(f"Request failed: {e}")
 
-# Function to run the async code in a separate thread
-def run_async_task(driver_url):
-    loop = asyncio.new_event_loop()  # Create a new event loop in the current thread
-    asyncio.set_event_loop(loop)  # Set it as the current event loop
-    loop.run_until_complete(fetch_url(driver_url))  # Run the async function
 
 def scrapeJobsData(applicantSkills, applicantLocation):
-
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
@@ -98,13 +93,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # st.code(driver.page_source)
 
 
-            # trying...
-            # asyncio.run(fetch_url(driver.current_url))
-
-            with ThreadPoolExecutor() as executor:
-                executor.submit(run_async_task, driver.current_url)
-
-
 
 
 
@@ -132,8 +120,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # divs = divs[:6]
             
             # Store the URLs to track if the page is already opened
-            opened_urls = []
-            fetched_data = []
+            # opened_urls = []
+            # fetched_data = []
             # Loop through each div, click it and retrieve the new window URL
             # for div in divs:
             #     try:
@@ -195,7 +183,10 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #         print(f"Error occurred: {e}")
 
             driver.quit()
-            return opened_urls
+            
+            #temporary
+            return driver.current_url
+            # return opened_urls
 
         except IndexError:
             pass
@@ -208,7 +199,7 @@ groq_llama3_llm = ChatGroq(
     model_name="mixtral-8x7b-32768",  # Replace with the desired model
 )
 
-def main():
+async def main():
     st.title("LLM Powered Job Recommendation System")
 
     # File uploader for PDF
@@ -233,7 +224,12 @@ def main():
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
 
-            fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
+            # fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
+
+            #temporary
+            current_url = scrapeJobsData(applicantSkills, applicantLocation)
+            await fetch_url(current_url)
+            
             # Convert the list to a JSON string
             # data_str = json.dumps(fetched_data)
             st.json(fetched_data)
@@ -288,4 +284,4 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
