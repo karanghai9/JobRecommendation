@@ -99,7 +99,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             time.sleep(5)
             st.code(driver.current_url)
             st.write("Please wait, searching for the jobs...")
-            # st.code(driver.page_source)
 
 
 
@@ -211,7 +210,7 @@ groq_llama3_llm = ChatGroq(
 
 async def main():
     st.title("LLM Powered Job Recommendation System")
-
+    st.write("Disclaimer: This is just a university project developed for learning, kindly visit https://www.stepstone.de/ for searching jobs.")
     # File uploader for PDF
     uploaded_file = st.file_uploader("Upload your resume", type="pdf")
 
