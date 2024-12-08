@@ -269,7 +269,7 @@ async def main():
             st.write("fetching from main:", current_url)
             # Step 1: Use Selenium to fetch cookies
             cookies = get_cookies_from_selenium(current_url)
-            st.code("Cookies extracted:", cookies)
+            st.code(cookies)
             
             data = await fetch_data(current_url)
             st.write(data)
