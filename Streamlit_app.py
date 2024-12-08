@@ -182,10 +182,12 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #     except Exception as e:
             #         print(f"Error occurred: {e}")
 
+            current_url = driver.current_url
+            st.write("quitting driver with:", current_url)
             driver.quit()
             
             #temporary
-            return driver.current_url
+            return current_url
             # return opened_urls
 
         except IndexError:
