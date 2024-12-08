@@ -239,7 +239,7 @@ async def main():
             st.write("fetching from main:", current_url)
 
             content = await fetch_data(current_url)
-            st.write(content)  # Display the page content in Streamlit
+            st.code(content)  # Display the page content in Streamlit
         
 
             
