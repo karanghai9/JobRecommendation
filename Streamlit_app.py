@@ -94,8 +94,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             # trying...
             # asyncio.run(fetch_url(driver.current_url))
 
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(fetch_url(driver.current_url))
+            with ThreadPoolExecutor() as executor:
+                executor.submit(run_async_task, driver.current_url)
 
 
 
