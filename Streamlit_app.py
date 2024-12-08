@@ -42,6 +42,12 @@ async def fetch_url(driver_url):
     except aiohttp.ClientError as e:
         st.code(f"Request failed: {e}")
 
+# Function to run the async code in a separate thread
+def run_async_task(driver_url):
+    loop = asyncio.new_event_loop()  # Create a new event loop in the current thread
+    asyncio.set_event_loop(loop)  # Set it as the current event loop
+    loop.run_until_complete(fetch_url(driver_url))  # Run the async function
+
 def scrapeJobsData(applicantSkills, applicantLocation):
 
     options = Options()
