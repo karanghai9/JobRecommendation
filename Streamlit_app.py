@@ -33,6 +33,7 @@ import asyncio
 import httpx
 from concurrent.futures import ThreadPoolExecutor
 from playwright.async_api import async_playwright
+from bs4 import BeautifulSoup
 import os
 
 os.system("playwright install")
@@ -239,7 +240,19 @@ async def main():
             st.write("fetching from main:", current_url)
 
             content = await fetch_data(current_url)
-            st.code(content)  # Display the page content in Streamlit
+            # st.code(content)  # Display the page content in Streamlit
+
+            # Parse the content using BeautifulSoup
+            soup = BeautifulSoup(content, 'lxml')
+                
+            # Find all <a> tags with class "res-1foik6i"
+            links = soup.find_all('a', class_='res-1foik6i')
+                
+            # Extract href attributes and link texts into a list
+            job_links = [(link['href'], link.text) for link in links]
+        
+            # Print the extracted links
+            st.code(job_links)
         
 
             
