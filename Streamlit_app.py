@@ -237,7 +237,7 @@ async def main():
 
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
-            st.write("fetching from main:", current_url)
+            # st.write("fetching from main:", current_url)
 
             content = await fetch_data(current_url)
             # st.code(content)  # Display the page content in Streamlit
@@ -250,9 +250,13 @@ async def main():
                 
             # Extract href attributes and link texts into a list
             job_links = [(link['href'], link.text) for link in links]
+
+            for job_url, job_name in job_links:
+                job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
+                st.write(f"**{job_name}**: [Link]({job_url_full})")
         
             # Print the extracted links
-            st.code(job_links)
+            # st.code(job_links)
         
 
             
