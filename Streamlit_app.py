@@ -92,7 +92,10 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             # trying...
-            asyncio.run(fetch_url(driver.current_url))
+            # asyncio.run(fetch_url(driver.current_url))
+
+            task = asyncio.create_task(fetch_url(driver.current_url))
+            asyncio.run(task)  # This should run the task properly
 
 
 
