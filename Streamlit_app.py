@@ -39,69 +39,18 @@ def install_playwright_browsers():
     with async_playwright() as p:
         p.chromium.install()
         
-async def run():
+async def fetch_data(url):
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        # Launch the browser (Chromium is just an example)
+        browser = await p.chromium.launch(headless=True)  # You can also use p.firefox or p.webkit
         page = await browser.new_page()
-
-        # Open the page
-        await page.goto('https://www.stepstone.de/work/reactjs_javascript_expo-go_react-native_expressjs_git_mongodb_machine-learning_deep-learning_azure-ml-studio_python_tensorflow_keras_pandas_numpy_scikit-learn_matplotlib_ci-cd_agile/in-mainz_de?radius=30&searchOrigin=Resultlist_top-search&q=ReactJS,%20JavaScript,%20Expo%20Go,%20React%20Native,%20ExpressJS,%20Git,%20MongoDB,%20Machine%20Learning,%20Deep%20Learning,%20Azure%20ML%20Studio,%20Python,%20Tensorflow,%20Keras,%20Pandas,%20Numpy,%20Scikit-learn,%20Matplotlib,%20CI%2FCD,%20Agile')
-
-        # Optionally wait for page elements to load
-        await page.wait_for_selector("div")
-
-        # Get the page source (HTML)
+        # Go to the URL
+        await page.goto(url)
+        # Get the page content
         content = await page.content()
-        
-        st.code(content)  # This will print the HTML content
+        # Close the browser
         await browser.close()
-
-def get_cookies_from_selenium(url):
-    options = Options()
-    options.add_argument("--headless")  # Run in headless mode for faster execution
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-
-    driver = webdriver.Chrome(options=options)
-
-    try:
-        driver.get(url)  # Open the website in the browser
-        # Perform any required actions like clicking buttons or filling forms
-
-        # Extract cookies
-        selenium_cookies = driver.get_cookies()
-        return {cookie["name"]: cookie["value"] for cookie in selenium_cookies}
-    finally:
-        driver.quit()
-
-async def fetch_data(url,cookies):
-    timeout = httpx.Timeout(30.0, connect=10.0)  # Increase read and connect timeout
-    async with httpx.AsyncClient(verify=False, timeout=timeout) as client:
-        try:
-            headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                "Connection": "keep-alive",
-            }
-            response = await client.get(url, headers=headers, cookies=cookies)
-            response.raise_for_status()  # Raise an error for HTTP errors
-            return response.text  # Get raw HTML source
-        except httpx.RequestError as e:
-            return f"An error occurred: {e}"
-
-async def fetch_url(driver_url):
-    st.write("fetch_url called with: ", driver_url)
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(driver_url, ssl=True) as response:
-                st.code(f"Status Code: {response.status}")
-                content = await response.text()  # or use `response.read()` for binary data
-                st.code(content)  # Print the full response content
-    except aiohttp.ClientError as e:
-        st.code(f"Request failed: {e}")
+        return content
 
 
 def scrapeJobsData(applicantSkills, applicantLocation):
@@ -290,15 +239,11 @@ async def main():
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
             st.write("fetching from main:", current_url)
-            # Step 1: Use Selenium to fetch cookies
-            cookies = get_cookies_from_selenium(current_url)
-            st.code(cookies)
 
             install_playwright_browsers()
-            await run()
-            
-            # data = await fetch_data(current_url,cookies)
-            # st.write(data)
+            content = await fetch_data(current_url)
+            st.write(content)  # Display the page content in Streamlit
+        
 
             
             
