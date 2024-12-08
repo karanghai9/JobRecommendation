@@ -8,3 +8,4 @@ seleniumbase
 aiohttp
 asyncio
 httpx
+playwright
