@@ -86,8 +86,8 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             location_input.send_keys(applicantLocation)
 
             location_input.send_keys(Keys.RETURN)
-            # st.success("Search button clicked!")
-            time.sleep(3)
+            st.write("Searching through the URL:")
+            # time.sleep(5)
             st.code(driver.current_url)
             st.write("Please wait, searching for the jobs...")
 
