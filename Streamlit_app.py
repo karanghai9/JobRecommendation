@@ -86,7 +86,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             location_input.send_keys(applicantLocation)
 
             location_input.send_keys(Keys.RETURN)
-            st.write("Search in progress!")
+            # st.write("Search in progress!")
             time.sleep(5)
             st.code(driver.current_url)
             st.write("Please wait, searching for the jobs...")
