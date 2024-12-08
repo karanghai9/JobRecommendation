@@ -29,6 +29,7 @@ from selenium.common.exceptions import ElementClickInterceptedException, Timeout
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import aiohttp
+import asyncio
 
 async def fetch_url(driver_url):
     try:
