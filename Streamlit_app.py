@@ -32,6 +32,11 @@ import aiohttp
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+async def fetch_data(url):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return response.json()
+
 async def fetch_url(driver_url):
     st.write("fetch_url called with: ", driver_url)
     try:
@@ -183,7 +188,6 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             #         print(f"Error occurred: {e}")
 
             current_url = driver.current_url
-            st.write("quitting driver with:", current_url)
             driver.quit()
             
             #temporary
@@ -201,7 +205,7 @@ groq_llama3_llm = ChatGroq(
     model_name="mixtral-8x7b-32768",  # Replace with the desired model
 )
 
-def main():
+async def main():
     st.title("LLM Powered Job Recommendation System")
 
     # File uploader for PDF
@@ -230,18 +234,9 @@ def main():
 
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
-            try:
-                # async run the draw function, sending in all the
-                # widgets it needs to use/populate
-                asyncio.run(fetch_url(current_url))
-            except Exception as e:
-                print(f'error...{type(e)}')
-                raise
-            finally:    
-                # some additional code to handle user clicking stop
-                print('finally')
-                # this doesn't actually get called, I think :(
-                table.write('User clicked stop!')
+
+            data = await fetch_data('https://jsonplaceholder.typicode.com/posts')
+            st.write(data)
 
             
             
@@ -299,4 +294,4 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 if __name__ == "__main__":
-    main()
+   asyncio.run(main())
