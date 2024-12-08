@@ -30,6 +30,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import aiohttp
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 async def fetch_url(driver_url):
     try:
