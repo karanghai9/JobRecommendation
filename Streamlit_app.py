@@ -221,7 +221,7 @@ async def main():
         if resume:
             st.success("File uploaded and processed successfully!")
             st.subheader("Extracted Text:")
-            st.text_area("Extracted Text", resume, height=300)
+            st.text_area(resume, height=300)
             # st.text_area("Extracted Text", resume, height=300)
 
             # Call the LLM to extract skills and location
