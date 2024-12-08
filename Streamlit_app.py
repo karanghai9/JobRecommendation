@@ -33,6 +33,25 @@ import asyncio
 import httpx
 from concurrent.futures import ThreadPoolExecutor
 
+def get_cookies_from_selenium(url):
+    options = Options()
+    options.add_argument("--headless")  # Run in headless mode for faster execution
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(options=options)
+
+    try:
+        driver.get(url)  # Open the website in the browser
+        # Perform any required actions like clicking buttons or filling forms
+
+        # Extract cookies
+        selenium_cookies = driver.get_cookies()
+        return {cookie["name"]: cookie["value"] for cookie in selenium_cookies}
+    finally:
+        driver.quit()
+
 async def fetch_data(url):
     timeout = httpx.Timeout(30.0, connect=10.0)  # Increase read and connect timeout
     async with httpx.AsyncClient(verify=False, timeout=timeout) as client:
@@ -248,6 +267,10 @@ async def main():
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
             st.write("fetching from main:", current_url)
+            # Step 1: Use Selenium to fetch cookies
+            cookies = get_cookies_from_selenium(current_url)
+            st.code("Cookies extracted:", cookies)
+            
             data = await fetch_data(current_url)
             st.write(data)
 
