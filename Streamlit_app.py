@@ -52,7 +52,7 @@ def get_cookies_from_selenium(url):
     finally:
         driver.quit()
 
-async def fetch_data(url):
+async def fetch_data(url,cookies):
     timeout = httpx.Timeout(30.0, connect=10.0)  # Increase read and connect timeout
     async with httpx.AsyncClient(verify=False, timeout=timeout) as client:
         try:
@@ -63,7 +63,7 @@ async def fetch_data(url):
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
                 "Connection": "keep-alive",
             }
-            response = await client.get(url, headers=headers)
+            response = await client.get(url, headers=headers, cookies=cookies)
             response.raise_for_status()  # Raise an error for HTTP errors
             return response.text  # Get raw HTML source
         except httpx.RequestError as e:
@@ -271,7 +271,7 @@ async def main():
             cookies = get_cookies_from_selenium(current_url)
             st.code(cookies)
             
-            data = await fetch_data(current_url)
+            data = await fetch_data(current_url,cookies)
             st.write(data)
 
             
