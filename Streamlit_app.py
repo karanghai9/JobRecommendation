@@ -201,7 +201,7 @@ groq_llama3_llm = ChatGroq(
     model_name="mixtral-8x7b-32768",  # Replace with the desired model
 )
 
-async def main():
+def main():
     st.title("LLM Powered Job Recommendation System")
 
     # File uploader for PDF
@@ -230,7 +230,20 @@ async def main():
 
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
-            await fetch_url(current_url)
+            try:
+                # async run the draw function, sending in all the
+                # widgets it needs to use/populate
+                asyncio.run(fetch_url(current_url))
+            except Exception as e:
+                print(f'error...{type(e)}')
+                raise
+            finally:    
+                # some additional code to handle user clicking stop
+                print('finally')
+                # this doesn't actually get called, I think :(
+                table.write('User clicked stop!')
+
+            
             
             # Convert the list to a JSON string
             # data_str = json.dumps(fetched_data)
@@ -286,4 +299,4 @@ def extract_skills_and_location(applicant_info):
         return "Error: Could not extract skills or location.", "Error: Could not extract skills or location."
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
