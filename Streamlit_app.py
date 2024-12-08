@@ -36,7 +36,7 @@ from playwright.async_api import async_playwright
 
 def install_playwright_browsers():
     # Install browsers for Playwright
-    with sync_playwright() as p:
+    with async_playwright() as p:
         p.chromium.install()
         
 async def run():
