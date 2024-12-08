@@ -34,9 +34,9 @@ import httpx
 from concurrent.futures import ThreadPoolExecutor
 from playwright.async_api import async_playwright
 
-def install_playwright_browsers():
+async def install_playwright_browsers():
     # Install browsers for Playwright
-    with async_playwright() as p:
+    async with async_playwright() as p:
         p.chromium.install()
         
 async def fetch_data(url):
@@ -240,7 +240,7 @@ async def main():
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
             st.write("fetching from main:", current_url)
 
-            install_playwright_browsers()
+            await install_playwright_browsers()
             content = await fetch_data(current_url)
             st.write(content)  # Display the page content in Streamlit
         
