@@ -32,6 +32,7 @@ import aiohttp
 import asyncio
 import httpx
 from concurrent.futures import ThreadPoolExecutor
+from playwright.async_api import async_playwright
 
 def get_cookies_from_selenium(url):
     options = Options()
