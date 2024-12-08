@@ -33,6 +33,9 @@ import asyncio
 import httpx
 from concurrent.futures import ThreadPoolExecutor
 from playwright.async_api import async_playwright
+import os
+
+os.system("playwright install")
         
 async def fetch_data(url):
     async with async_playwright() as p:
