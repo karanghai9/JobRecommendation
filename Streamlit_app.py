@@ -231,10 +231,9 @@ async def main():
             if not job_links:
                 st.error("Make sure the address in your CV is from Germany!")
             else:
-                # Proceed with the normal processing (e.g., displaying jobs)
+                st.success("Found relevant jobs:")
                 for job_url, job_name in job_links:
                     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
-                    st.success("Found relevant jobs:")
                     st.write(f"**{job_name}**: [Link]({job_url_full})")
         else:
             st.error("No text found in the PDF.")
