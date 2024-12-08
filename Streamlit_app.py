@@ -73,13 +73,9 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             driver.implicitly_wait(10)
             driver.get("https://www.stepstone.de/work/?action=facet_selected")
             sleep(randint(8, 10))
-            # data = driver.find_elements(by=By.XPATH, value="ccmgt_explicit_accept")
-            # return str(data)
-            # Wait until the element is clickable
             element = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))
             )
-            # Click the element
             element.click()
 
             input_element = WebDriverWait(driver, 5).until(
@@ -211,7 +207,6 @@ groq_llama3_llm = ChatGroq(
 async def main():
     st.title("LLM Powered Job Recommendation System")
     st.write("Disclaimer: This is just a university project developed for learning, kindly visit https://www.stepstone.de/ for searching jobs.")
-    # File uploader for PDF
     uploaded_file = st.file_uploader("Upload your resume", type="pdf")
 
     if uploaded_file is not None:
@@ -220,40 +215,24 @@ async def main():
 
         if resume:
             st.success("File uploaded and processed successfully!")
-            st.subheader("Extracted Text:")
-            st.text_area(" ",resume, height=300)
-            # st.text_area("Extracted Text", resume, height=300)
+            st.text_area("Extracted Text", resume, height=200)
 
-            # Call the LLM to extract skills and location
             applicant_info = callLLM(resume)
-
-            # Extract skills and location from the LLM response
             applicantSkills, applicantLocation = extract_skills_and_location(applicant_info)
 
             # Display the extracted skills and location
             st.subheader("Extracted Information:")
             st.write(f"Skills: {applicantSkills}")
             st.write(f"Location: {applicantLocation}")
-
-            # fetched_data = scrapeJobsData(applicantSkills, applicantLocation)
-
-            #temporary
+        
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
             # st.write("fetching from main:", current_url)
 
             content = await fetch_data(current_url)
-            # st.code(content)  # Display the page content in Streamlit
-
-            # Parse the content using BeautifulSoup
             soup = BeautifulSoup(content, 'lxml')
-                
-            # Find all <a> tags with class "res-1foik6i"
             links = soup.find_all('a', class_='res-1foik6i')
-                
-            # Extract href attributes and link texts into a list
             job_links = [(link['href'], link.text) for link in links]
 
-            # Check if job_links is empty and display a message
             if not job_links:
                 st.error("Make sure the address in your CV is from Germany!")
             else:
@@ -262,27 +241,6 @@ async def main():
                     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
                     st.success("Found relevant jobs:")
                     st.write(f"**{job_name}**: [Link]({job_url_full})")
-
-            # for job_url, job_name in job_links:
-            #     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
-            #     st.write(f"**{job_name}**: {job_url_full}({job_url_full})")
-        
-            # Print the extracted links
-            # st.code(job_links)
-        
-
-            
-            
-            # Convert the list to a JSON string
-            # data_str = json.dumps(fetched_data)
-            # st.json(fetched_data)
-
-            # Display the fetched job data
-            # st.subheader("Job Recommendations:")
-            # for job in fetched_data:
-            #     st.write(f"Job URL: {job['URL']}")
-            #     st.write(f"Job Description: {job['data']}")
-
         else:
             st.error("No text found in the PDF.")
 
