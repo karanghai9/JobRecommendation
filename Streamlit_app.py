@@ -82,13 +82,13 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
             # trying...
             async with aiohttp.ClientSession() as session:
-                try:
-                    async with session.get(driver.current_url, ssl=True) as response:
-                    st.code(f"Status Code: {response.status}")
-                    content = await response.text()  # or use `response.read()` for binary data
-                    st.code(content)  # Print the first 100 characters of the response
-                except aiohttp.ClientError as e:
-                    st.code(f"Request failed: {e}")
+                    try:
+                        async with session.get(driver.current_url, ssl=True) as response:
+                        st.code(f"Status Code: {response.status}")
+                        content = await response.text()  # or use `response.read()` for binary data
+                        st.code(content)  # Print the first 100 characters of the response
+                    except aiohttp.ClientError as e:
+                        st.code(f"Request failed: {e}")
 
 
 
