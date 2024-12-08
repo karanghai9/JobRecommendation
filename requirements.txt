@@ -7,3 +7,4 @@ pandas
 seleniumbase
 aiohttp
 asyncio
+import httpx
