@@ -253,7 +253,7 @@ async def main():
 
             for job_url, job_name in job_links:
                 job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
-                st.write(f"**{job_name}**: [Link]({job_url_full})")
+                st.write(f"**{job_name}**: {job_url_full}({job_url_full})")
         
             # Print the extracted links
             # st.code(job_links)
