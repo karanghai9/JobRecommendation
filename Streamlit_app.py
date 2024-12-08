@@ -214,7 +214,6 @@ async def main():
         resume = extract_text_from_pdf(uploaded_file)
 
         if resume:
-            st.success("File uploaded and processed successfully!")
             st.text_area("Extracted Text", resume, height=200)
 
             applicant_info = callLLM(resume)
