@@ -34,6 +34,11 @@ import httpx
 from concurrent.futures import ThreadPoolExecutor
 from playwright.async_api import async_playwright
 
+def install_playwright_browsers():
+    # Install browsers for Playwright
+    with sync_playwright() as p:
+        p.chromium.install()
+        
 async def run():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -289,6 +294,7 @@ async def main():
             cookies = get_cookies_from_selenium(current_url)
             st.code(cookies)
 
+            install_playwright_browsers()
             await run()
             
             # data = await fetch_data(current_url,cookies)
