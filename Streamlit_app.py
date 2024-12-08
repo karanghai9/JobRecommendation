@@ -40,17 +40,12 @@ os.system("playwright install")
         
 async def fetch_data(url):
     async with async_playwright() as p:
-        # Launch the browser (Chromium is just an example)
-        browser = await p.chromium.launch(headless=True)  # You can also use p.firefox or p.webkit
+        browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
-        # Go to the URL
         await page.goto(url)
-        # Get the page content
         content = await page.content()
-        # Close the browser
         await browser.close()
         return content
-
 
 def scrapeJobsData(applicantSkills, applicantLocation):
     options = Options()
@@ -214,6 +209,7 @@ async def main():
         resume = extract_text_from_pdf(uploaded_file)
 
         if resume:
+            st.success("Resume uploaded successfully.")
             st.text_area("Extracted Text", resume, height=200)
 
             applicant_info = callLLM(resume)
