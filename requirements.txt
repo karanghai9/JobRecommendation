@@ -6,3 +6,4 @@ webdriver-manager
 pandas
 seleniumbase
 aiohttp
+asyncio
