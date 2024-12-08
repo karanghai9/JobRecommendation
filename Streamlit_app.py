@@ -254,7 +254,6 @@ async def main():
             # Check if job_links is empty and display a message
             if not job_links:
                 st.error("Make sure the address in your CV is from Germany!")
-                st.write("Make sure the address in your CV is in Germany")
             else:
                 # Proceed with the normal processing (e.g., displaying jobs)
                 for job_url, job_name in job_links:
@@ -275,7 +274,6 @@ async def main():
             # Convert the list to a JSON string
             # data_str = json.dumps(fetched_data)
             # st.json(fetched_data)
-            st.write("Request completed")
 
             # Display the fetched job data
             # st.subheader("Job Recommendations:")
