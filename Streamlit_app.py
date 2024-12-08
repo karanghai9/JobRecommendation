@@ -35,11 +35,14 @@ from concurrent.futures import ThreadPoolExecutor
 
 async def fetch_data(url):
     timeout = httpx.Timeout(30.0, connect=10.0)  # Increase read and connect timeout
-    async with httpx.AsyncClient(timeout=timeout) as client:
+    async with httpx.AsyncClient(verify=False, timeout=timeout) as client:
         try:
-            response = await client.get(url)
-            response.raise_for_status()  # Raise an error if the response code is not 2xx
-            return response.json()
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            }
+            response = await client.get(url, headers=headers)
+            response.raise_for_status()  # Raise an error for HTTP errors
+            return response.text  # Get raw HTML source
         except httpx.RequestError as e:
             return f"An error occurred: {e}"
 
