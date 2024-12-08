@@ -251,9 +251,18 @@ async def main():
             # Extract href attributes and link texts into a list
             job_links = [(link['href'], link.text) for link in links]
 
-            for job_url, job_name in job_links:
-                job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
-                st.write(f"**{job_name}**: {job_url_full}({job_url_full})")
+            # Check if job_links is empty and display a message
+            if not job_links:
+                print("Make sure the address in your CV is in Germany")
+            else:
+                # Proceed with the normal processing (e.g., displaying jobs)
+                for job_url, job_name in job_links:
+                    job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
+                    print(f"**{job_name}**: [Link]({job_url_full})")
+
+            # for job_url, job_name in job_links:
+            #     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
+            #     st.write(f"**{job_name}**: {job_url_full}({job_url_full})")
         
             # Print the extracted links
             # st.code(job_links)
