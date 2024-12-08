@@ -34,6 +34,23 @@ import httpx
 from concurrent.futures import ThreadPoolExecutor
 from playwright.async_api import async_playwright
 
+async def run():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+
+        # Open the page
+        await page.goto('https://www.stepstone.de/work/reactjs_javascript_expo-go_react-native_expressjs_git_mongodb_machine-learning_deep-learning_azure-ml-studio_python_tensorflow_keras_pandas_numpy_scikit-learn_matplotlib_ci-cd_agile/in-mainz_de?radius=30&searchOrigin=Resultlist_top-search&q=ReactJS,%20JavaScript,%20Expo%20Go,%20React%20Native,%20ExpressJS,%20Git,%20MongoDB,%20Machine%20Learning,%20Deep%20Learning,%20Azure%20ML%20Studio,%20Python,%20Tensorflow,%20Keras,%20Pandas,%20Numpy,%20Scikit-learn,%20Matplotlib,%20CI%2FCD,%20Agile')
+
+        # Optionally wait for page elements to load
+        await page.wait_for_selector("div")
+
+        # Get the page source (HTML)
+        content = await page.content()
+        
+        st.code(content)  # This will print the HTML content
+        await browser.close()
+
 def get_cookies_from_selenium(url):
     options = Options()
     options.add_argument("--headless")  # Run in headless mode for faster execution
@@ -271,9 +288,11 @@ async def main():
             # Step 1: Use Selenium to fetch cookies
             cookies = get_cookies_from_selenium(current_url)
             st.code(cookies)
+
+            await run()
             
-            data = await fetch_data(current_url,cookies)
-            st.write(data)
+            # data = await fetch_data(current_url,cookies)
+            # st.write(data)
 
             
             
