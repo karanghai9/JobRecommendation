@@ -28,6 +28,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+import aiohttp
 
 def scrapeJobsData(applicantSkills, applicantLocation):
 
@@ -76,9 +77,18 @@ def scrapeJobsData(applicantSkills, applicantLocation):
             st.success("Search button clicked (via send_keys)!")
             time.sleep(5)
             st.code(driver.current_url)
-            st.code(driver.page_source)
+            # st.code(driver.page_source)
 
 
+            # trying...
+            async with aiohttp.ClientSession() as session:
+                try:
+                    async with session.get(driver.current_url, ssl=True) as response:
+                    st.code(f"Status Code: {response.status}")
+                    content = await response.text()  # or use `response.read()` for binary data
+                    st.code(content)  # Print the first 100 characters of the response
+                except aiohttp.ClientError as e:
+                    st.code(f"Request failed: {e}")
 
 
 
