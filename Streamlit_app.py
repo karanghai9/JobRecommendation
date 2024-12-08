@@ -253,12 +253,12 @@ async def main():
 
             # Check if job_links is empty and display a message
             if not job_links:
-                print("Make sure the address in your CV is in Germany")
+                st.write("Make sure the address in your CV is in Germany")
             else:
                 # Proceed with the normal processing (e.g., displaying jobs)
                 for job_url, job_name in job_links:
                     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
-                    print(f"**{job_name}**: [Link]({job_url_full})")
+                    st.write(f"**{job_name}**: [Link]({job_url_full})")
 
             # for job_url, job_name in job_links:
             #     job_url_full = f"https://www.stepstone.de{job_url}"  # Complete the URL if it's relative
