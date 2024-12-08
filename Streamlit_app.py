@@ -30,6 +30,16 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import aiohttp
 
+async def fetch_url(driver_url):
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(driver_url, ssl=True) as response:
+                st.code(f"Status Code: {response.status}")
+                content = await response.text()  # or use `response.read()` for binary data
+                st.code(content)  # Print the full response content
+    except aiohttp.ClientError as e:
+        st.code(f"Request failed: {e}")
+
 def scrapeJobsData(applicantSkills, applicantLocation):
 
     options = Options()
@@ -81,15 +91,7 @@ def scrapeJobsData(applicantSkills, applicantLocation):
 
 
             # trying...
-            async with aiohttp.ClientSession() as session:
-                try:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(driver.current_url, ssl=True) as response:
-                            st.code(f"Status Code: {response.status}")
-                            content = await response.text()  # or use `response.read()` for binary data
-                            st.code(content)  # Print the full response content
-                except aiohttp.ClientError as e:
-                    st.code(f"Request failed: {e}")
+            asyncio.run(fetch_url(driver.current_url))
 
 
 
