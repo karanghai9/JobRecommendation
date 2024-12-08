@@ -235,15 +235,15 @@ async def main():
 
             #temporary
             current_url = scrapeJobsData(applicantSkills, applicantLocation)
-
-            data = await fetch_data('https://jsonplaceholder.typicode.com/posts')
+            st.write("fetching from main:", current_url)
+            data = await fetch_data(current_url)
             st.write(data)
 
             
             
             # Convert the list to a JSON string
             # data_str = json.dumps(fetched_data)
-            st.json(fetched_data)
+            # st.json(fetched_data)
             st.success("Done")
 
             # Display the fetched job data
